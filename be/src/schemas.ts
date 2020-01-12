@@ -2,6 +2,7 @@ export const OrderSchema = {
   $schema: "http://json-schema.org/draft-07/schema#",
   definitions: {
     NewOrder: {
+      additionalProperties: false,
       properties: {
         deliveryCost: {
           type: "number"
@@ -21,6 +22,7 @@ export const OrderSchema = {
       type: "object"
     },
     Order: {
+      additionalProperties: false,
       properties: {
         _id: {
           type: "string"
@@ -67,6 +69,7 @@ export const OrderSchema = {
       type: "string"
     },
     UpdateOrder: {
+      additionalProperties: false,
       properties: {
         deliveryCost: {
           type: "number"
@@ -92,6 +95,7 @@ export const OrderSchema = {
       type: "object"
     },
     UserOrder: {
+      additionalProperties: false,
       properties: {
         comment: {
           type: "string"

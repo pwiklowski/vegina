@@ -7,7 +7,7 @@
     "test-api": "tsc -p cypress.tsconfig.json && cypress run",
     "test": "jest",
     "start": "ts-node-dev src/index.ts",
-    "generate-schemas": "typescript-json-schema src/models.ts \"*\" -e all"
+    "generate-schemas": "typescript-json-schema src/models.ts \"*\" -e all --noExtraProps"
   },
   "repository": {
     "type": "git",
