@@ -17,13 +17,6 @@ app.use(
   })
 );
 
-app.use(function(err: any, req: any, res: any, next: any) {
-  if (err instanceof ValidationError) {
-    res.status(400).send("invalid");
-    next();
-  } else next(err); // pass error on if not a validation error
-});
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -103,6 +96,16 @@ app.use(function(req, res, next) {
     const orderId = req.params.orderId;
     await orders.deleteOne({ _id: new mongo.ObjectID(orderId) });
     res.sendStatus(204);
+  });
+
+  app.use(function(err: any, req: any, res: any, next: any) {
+    if (err instanceof ValidationError) {
+      res.statusCode = 422;
+      res.sendJson(err);
+      next();
+    } else {
+      next(err); // pass error on if not a validation error
+    }
   });
 
   app.listen(8080);
