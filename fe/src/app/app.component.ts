@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { VegeService } from './vege.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'wege-front';
+
+  user: any;
+
+  constructor(private service: VegeService) {
+
+  }
+
+  async ngOnInit() {
+    this.user = await this.service.getProfile();
+  }
 }
