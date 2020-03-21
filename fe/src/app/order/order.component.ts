@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Order } from '../../../../be/src/models';
+import { PopupService } from '../popup.service';
 
 @Component({
   selector: 'app-order',
@@ -10,10 +11,13 @@ export class OrderComponent implements OnInit {
 
   @Input() order: Order;
 
-  constructor() { }
+  constructor(private popup: PopupService) { }
 
   ngOnInit(): void {
     console.log(this.order)
   }
 
+  openPopup(){
+    this.popup.openPopup(this.order._id);
+  }
 }

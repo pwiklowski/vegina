@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express = require("express");
 import * as mongo from "mongodb";
-import { Order, OrderStatus, NewOrder, UpdateOrder } from "./models";
+import { Order, OrderStatus, NewOrder, UpdateOrder, UserOrder } from "./models";
 import { OrderSchema } from "./schemas";
 const { Validator, ValidationError } = require("express-json-validator-middleware");
 
@@ -151,12 +151,65 @@ app.use(function (req, res, next) {
     }
   );
 
+  app.post(
+    "/orders/:orderId",
+    passport.authenticate("bearer", { session: false }),
+    validator.validate({ body: OrderSchema.definitions.UserOrder}),
+    async (req: express.Request, res: express.Response) => {
+      const orderId = req.params.orderId;
+
+      let order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
+      if (order) {
+        const userOrder: UserOrder = req.body;
+        userOrder._id = new mongo.ObjectID().toHexString();
+        userOrder.timestamp = new Date();
+        userOrder.userId = req.user.profile.id;
+        userOrder.settled = false;
+
+        order.userOrders.push(userOrder);
+
+        await orders.replaceOne({ _id: new mongo.ObjectID(orderId) }, order);
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(400);
+      }
+    }
+  );
+
   app.delete("/orders/:orderId",
     passport.authenticate("bearer", { session: false }),
     async (req: express.Request, res: express.Response) => {
       const orderId = req.params.orderId;
       await orders.deleteOne({ _id: new mongo.ObjectID(orderId) });
       res.sendStatus(204);
+    }
+  );
+
+  app.delete("/orders/:orderId/:userOrderId",
+    passport.authenticate("bearer", { session: false }),
+    async (req: express.Request, res: express.Response) => {
+      const orderId = req.params.orderId;
+      const userOrderId = req.params.userOrderId;
+
+      let order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
+      if (order) {
+
+        const userOrderIndex = order.userOrders.findIndex((userOrder: UserOrder) => userOrder._id === userOrderId);
+        console.log(userOrderIndex)
+        if (userOrderIndex < 0) {
+          res.sendStatus(400);
+          return
+        }
+
+        order.userOrders = order.userOrders.filter((userOrder: UserOrder) => userOrder._id !== userOrderId);
+
+        console.log(order)
+
+        await orders.replaceOne({ _id: new mongo.ObjectID(orderId) }, order);
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(400);
+      }
     }
   );
 

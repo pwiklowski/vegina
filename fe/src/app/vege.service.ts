@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Order } from '../../../be/src/models';
+import { Order, UserOrder } from '../../../be/src/models';
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +17,13 @@ export class VegeService {
 
   async getOrders() {
     return this.http.get(this.BASE_URL + "/orders").toPromise() as Promise<Array<Order>>;
+  }
+
+  async addUserOrder(orderId: string, userOrder: UserOrder) {
+    return this.http.post(this.BASE_URL + "/orders/" + orderId, userOrder).toPromise() as Promise<Array<Order>>;
+  }
+
+  async removeUserOrder(orderId: string, userOrderId: string) {
+    return this.http.delete(`${this.BASE_URL}/orders/${orderId}/${userOrderId}`).toPromise() as Promise<Array<Order>>;
   }
 }

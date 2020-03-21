@@ -28,12 +28,13 @@ export interface UpdateOrder {
 }
 
 export interface UserOrder {
-  userId: string;
-  timestamp: Date;
+  _id?: string;
+  userId?: string;
+  timestamp?: Date;
   item: string;
   price: number;
-  comment: string;
-  settled: boolean;
+  comment?: string;
+  settled?: boolean;
 }
 
 export enum OrderStatus {

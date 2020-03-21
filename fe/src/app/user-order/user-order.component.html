@@ -1,5 +1,8 @@
 <div class="user-order">
     <div>
+        id: {{ userOrder._id}}
+    </div>
+    <div>
         userId: {{ userOrder.userId }}
     </div>
     <div>
@@ -16,5 +19,9 @@
     </div>
     <div>
         settled: {{ userOrder.settled }}
+    </div>
+
+    <div>
+        <button (click)="remove()">remove</button>
     </div>
 </div>

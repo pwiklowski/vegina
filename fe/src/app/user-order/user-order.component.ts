@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserOrder } from '../../../../be/src/models';
+import { VegeService } from '../vege.service';
 
 @Component({
   selector: 'app-user-order',
@@ -9,10 +10,15 @@ import { UserOrder } from '../../../../be/src/models';
 export class UserOrderComponent implements OnInit {
 
   @Input() userOrder: UserOrder;
+  @Input() orderId: string;
 
-  constructor() { }
+  constructor(private vege: VegeService) { }
 
   ngOnInit(): void {
+  }
+
+  remove() {
+    this.vege.removeUserOrder(this.orderId, this.userOrder._id)
   }
 
 }

@@ -1,40 +1,29 @@
 <div class="order box">
+  <div>
+    order
+  </div>
 
+  <div>place: {{ order.placeName }}</div>
+  <div>placeUrl: {{ order.placeUrl }}</div>
 
-    <div>
-        order
-    </div>
+  <div>start: {{ order.start }}</div>
 
-    <div>
-        place: {{ order.placeName}}
-    </div>
-    <div>
-        placeUrl: {{ order.placeUrl }}
-    </div>
+  <div>finish: {{ order.end }}</div>
 
-    <div>
-        start: {{ order.start }}
-    </div>
+  <div>status: {{ order.status }}</div>
 
-    <div>
-        finish: {{ order.end }}
-    </div>
+  <div>deliveryCost: {{ order.deliveryCost }}</div>
 
-    
-    <div>
-        status: {{ order.status }}
-    </div>
+  <div>
+    orders:
 
-    <div>
-        deliveryCost: {{ order.deliveryCost }}
-    </div>
+    <app-user-order
+      *ngFor="let userOrder of order.userOrders"
+      [userOrder]="userOrder"
+      [orderId]="order._id"
+    >
+    </app-user-order>
+  </div>
 
-    <div>
-        orders:
-
-        <app-user-order *ngFor="let userOrder of order.userOrders" [userOrder]="userOrder">
-
-        </app-user-order>
-    </div>
-
+  <button (click)="openPopup()">add</button>
 </div>

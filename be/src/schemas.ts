@@ -104,18 +104,12 @@ export const OrderSchema = {
           type: "string"
         },
         price: {
-          type: "number"
+          type: "number",
+          
         },
-        settled: {
-          type: "boolean"
-        },
-        timestamp: {
-          description: "Enables basic storage and retrieval of dates and times.",
-          format: "date-time",
-          type: "string"
-        }
       },
-      type: "object"
+      type: "object",
+      required: ["item", "price"]
     }
   }
 };
