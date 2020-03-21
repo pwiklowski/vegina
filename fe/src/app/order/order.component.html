@@ -31,6 +31,10 @@
 
     <div>
         orders:
+
+        <app-user-order *ngFor="let userOrder of order.userOrders" [userOrder]="userOrder">
+
+        </app-user-order>
     </div>
 
 </div>

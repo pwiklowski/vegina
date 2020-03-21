@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from 'src/token.interceptor';
 import { OrderComponent } from './order/order.component';
+import { UserOrderComponent } from './user-order/user-order.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OrderComponent
+    OrderComponent,
+    UserOrderComponent
   ],
   imports: [
     BrowserModule,
