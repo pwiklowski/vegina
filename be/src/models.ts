@@ -28,6 +28,7 @@ export interface UpdateOrder {
 }
 
 export interface UserOrder {
+  userId: string;
   timestamp: Date;
   item: string;
   price: number;

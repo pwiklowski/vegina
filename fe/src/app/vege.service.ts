@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Order } from '../../../be/src/models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,5 +13,9 @@ export class VegeService {
 
   async getProfile() {
     return this.http.get(this.BASE_URL + "/profile").toPromise();
+  }
+
+  async getOrders() {
+    return this.http.get(this.BASE_URL + "/orders").toPromise() as Promise<Array<Order>>;
   }
 }

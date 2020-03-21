@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from 'src/token.interceptor';
+import { OrderComponent } from './order/order.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

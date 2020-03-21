@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { VegeService } from './vege.service';
+import { Order} from '../../../be/src/models'
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ export class AppComponent {
   title = 'wege-front';
 
   user: any;
+  orders: Array<Order>;
 
   constructor(private service: VegeService) {
 
@@ -17,5 +19,8 @@ export class AppComponent {
 
   async ngOnInit() {
     this.user = await this.service.getProfile();
+
+
+    this.orders = await this.service.getOrders();
   }
 }
