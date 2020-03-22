@@ -1,6 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Order, UserOrder, NewOrder } from "../../../be/src/models";
+import {
+  Order,
+  UserOrder,
+  NewOrder,
+  UpdateOrder
+} from "../../../be/src/models";
 
 @Injectable({
   providedIn: "root"
@@ -23,6 +28,12 @@ export class VegeService {
   async getOrder(orderId: string) {
     return this.http
       .get(`${this.BASE_URL}/orders/${orderId}`)
+      .toPromise() as Promise<Order>;
+  }
+
+  async updateOrder(orderId: string, order: UpdateOrder) {
+    return this.http
+      .patch(`${this.BASE_URL}/orders/${orderId}`, order)
       .toPromise() as Promise<Order>;
   }
 

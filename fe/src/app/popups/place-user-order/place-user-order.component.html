@@ -1,7 +1,7 @@
 <popup>
   <button (click)="close()">close</button>
   <input placeholder="item" [(ngModel)]="item" />
-  <input placeholder="price" type="number" [(ngModel)]="price" />
+  <input placeholder="price" inputmode="decimal" [(ngModel)]="price" />
   <input placeholder="comment" [(ngModel)]="comment" />
   <button (click)="addOrder()">Close</button>
 </popup>

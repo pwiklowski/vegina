@@ -47,7 +47,7 @@ export class AppComponent {
   }
 
   createOrder() {
-    this.popupService.openPopup(CreateOrderComponent, {}, async () => {
+    this.popupService.openPopup(CreateOrderComponent, null, async () => {
       this.orders = await this.service.getOrders();
     });
   }

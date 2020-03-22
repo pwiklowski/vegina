@@ -8,9 +8,11 @@
 
   <input
     placeholder="Delivery cost"
-    inputmode="numeric"
+    inputmode="decimal"
     [(ngModel)]="deliveryCost"
   />
 
-  <button (click)="create()">Create</button>
+  <button *ngIf="!isEdit" (click)="create()">Create</button>
+
+  <button *ngIf="isEdit" (click)="edit()">edit</button>
 </popup>
