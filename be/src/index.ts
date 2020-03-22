@@ -169,6 +169,11 @@ app.use(function(req, res, next) {
           return;
         }
 
+        if (order.userOrders[userOrderIndex].userId !== req.user.sub) {
+          res.sendStatus(403);
+          return;
+        }
+
         order.userOrders = order.userOrders.filter((userOrder: UserOrder) => userOrder._id !== userOrderId);
 
         console.log(order);
