@@ -6,6 +6,7 @@ export interface Order {
   placeUrl: string;
   deliveryCost: number;
   masterUserId: string;
+  master: UserMetaData;
   initiatorUserId: string;
   userOrders: UserOrder[];
   status: string;
@@ -31,6 +32,7 @@ export interface UpdateOrder {
 export interface UserOrder {
   _id?: string;
   userId?: string;
+  user?: UserMetaData;
   timestamp?: Date;
   item: string;
   price: number;
@@ -44,4 +46,11 @@ export enum OrderStatus {
   ORDERED = "ORDERED",
   DELIVERED = "DELIVERED",
   CANCELED = "CANCELED"
+}
+
+export interface UserMetaData {
+  sub: string;
+  email: string;
+  name: string;
+  picture: string;
 }

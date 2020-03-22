@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express = require("express");
 import * as mongo from "mongodb";
-import { Order, OrderStatus, NewOrder, UpdateOrder, UserOrder } from "./models";
+import { Order, OrderStatus, NewOrder, UpdateOrder, UserOrder, UserMetaData } from "./models";
 import { OrderSchema } from "./schemas";
 const { Validator, ValidationError } = require("express-json-validator-middleware");
 
@@ -33,6 +33,15 @@ app.use(function(req, res, next) {
   next();
 });
 
+const createUserMetaData = (user: any): UserMetaData => {
+  return {
+    email: user.email,
+    sub: user.sub,
+    name: user.name,
+    picture: user.picture
+  };
+};
+
 (async () => {
   const client: mongo.MongoClient = await mongo.connect("mongodb://127.0.0.1:27017", {
     useNewUrlParser: true,
@@ -47,6 +56,9 @@ app.use(function(req, res, next) {
       try {
         const ticket = await oAuth2Client.verifyIdToken({ idToken: token, audience: process.env.CLIENT_ID });
         const payload = ticket.getPayload();
+
+        users.updateOne({ sub: payload.sub }, { $set: payload }, { upsert: true });
+
         return done(null, payload, { scope: "all" });
       } catch (err) {
         return done(null, null, { scope: "all" });
@@ -73,6 +85,7 @@ app.use(function(req, res, next) {
         status: OrderStatus.STARTED,
         masterUserId: userId,
         initiatorUserId: userId,
+        master: createUserMetaData(req.user),
         userOrders: []
       };
 
@@ -131,6 +144,7 @@ app.use(function(req, res, next) {
         userOrder._id = new mongo.ObjectID().toHexString();
         userOrder.timestamp = new Date();
         userOrder.userId = req.user.sub;
+        userOrder.user = createUserMetaData(req.user);
         userOrder.settled = false;
 
         order.userOrders.push(userOrder);
