@@ -18,6 +18,10 @@ export class VegeService {
   async getOrders() {
     return this.http.get(this.BASE_URL + "/orders").toPromise() as Promise<Array<Order>>;
   }
+  
+  async getOrder(orderId: string) {
+    return this.http.get(this.BASE_URL + "/orders/"+ orderId).toPromise() as Promise<Order>;
+  }
 
   async addUserOrder(orderId: string, userOrder: UserOrder) {
     return this.http.post(this.BASE_URL + "/orders/" + orderId, userOrder).toPromise() as Promise<Array<Order>>;

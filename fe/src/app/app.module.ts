@@ -1,25 +1,31 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { TokenInterceptor } from 'src/token.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from 'src/token.interceptor';
+import { CreateOrderComponent } from './create-order/create-order.component';
 import { OrderComponent } from './order/order.component';
-import { UserOrderComponent } from './user-order/user-order.component';
 import { PlaceUserOrderComponent } from './place-user-order/place-user-order.component';
+import { PopupComponent } from './popup/popup.component';
+import { UserOrderComponent } from './user-order/user-order.component';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     OrderComponent,
     UserOrderComponent,
-    PlaceUserOrderComponent
+    PlaceUserOrderComponent,
+    CreateOrderComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     {

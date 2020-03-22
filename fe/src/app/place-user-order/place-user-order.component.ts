@@ -1,36 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { PopupService } from '../popup.service';
-import { VegeService } from '../vege.service';
+import { Component } from "@angular/core";
+import { PopupComponent } from "../popup/popup.component";
+import { VegeService } from "../vege.service";
 
 @Component({
-  selector: 'app-place-user-order',
-  templateUrl: './place-user-order.component.html',
-  styleUrls: ['./place-user-order.component.less']
+  selector: "app-place-user-order",
+  templateUrl: "./place-user-order.component.html",
+  styleUrls: ["./place-user-order.component.less"]
 })
-export class PlaceUserOrderComponent implements OnInit {
-
-  hidden = true;
+export class PlaceUserOrderComponent extends PopupComponent {
   orderId: string;
 
-  constructor(private popupService: PopupService, private vege: VegeService) { }
+  item: string;
+  price: number;
+  comment: string;
 
-  ngOnInit(): void {
-
-    this.popupService.register(this);
+  constructor(private vege: VegeService) {
+    super();
   }
 
-  open(orderId: string) {
-    this.orderId = orderId;
-    this.hidden = false;
+  ngOnInit(): void {}
+
+  init(params: any) {
+    this.orderId = params.orderId;
   }
 
   addOrder() {
     const userOrder = {
-      item: "sdf",
-      price: 123
-    }
+      item: this.item,
+      price: this.price,
+      comment: this.comment
+    };
 
     this.vege.addUserOrder(this.orderId, userOrder);
-    this.hidden = true;
+    this.onClose.emit();
   }
 }

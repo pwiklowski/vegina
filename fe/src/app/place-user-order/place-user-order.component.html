@@ -1,9 +1,6 @@
-<div class="dim" [class.hidden]="hidden">
-  <div class="place-order-popup">
-    <input placeholder="item" />
-    <input placeholder="price" />
-    <input placeholder="comment" />
-
-    <button (click)="addOrder()">Close</button>
-  </div>
-</div>
+<popup>
+  <input placeholder="item" [(ngModel)]="item"/>
+  <input placeholder="price" type="number" [(ngModel)]="price"/>
+  <input placeholder="comment" [(ngModel)]="comment"/>
+  <button (click)="addOrder()">Close</button>
+</popup>    

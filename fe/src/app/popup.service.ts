@@ -1,20 +1,31 @@
-import { Injectable } from '@angular/core';
-import { PlaceUserOrderComponent } from './place-user-order/place-user-order.component';
+import { ComponentFactoryResolver, Injectable, ViewContainerRef, Type } from '@angular/core';
+import { PopupComponent } from './popup/popup.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PopupService {
 
-  popupComponent: PlaceUserOrderComponent;
+  popupContainer: ViewContainerRef;
 
-  constructor() { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 
-  openPopup(orderId: string) {
-    this.popupComponent.open(orderId);
   }
 
-  register(popupComponent: PlaceUserOrderComponent) {
-    this.popupComponent = popupComponent;
+  init(container: ViewContainerRef) {
+    this.popupContainer = container;
+  }
+
+  openPopup(popup, params?: any, onCloseCallback?: Function) {
+    const ref = this.componentFactoryResolver.resolveComponentFactory(popup);
+    const componentRef = this.popupContainer.createComponent(ref);
+    (componentRef.instance as PopupComponent).init(params);
+    (componentRef.instance as PopupComponent).onClose.subscribe(()=>{
+      this.popupContainer.clear();
+
+      if (onCloseCallback) {
+        onCloseCallback();
+      }
+    });
   }
 }

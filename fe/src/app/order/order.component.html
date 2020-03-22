@@ -20,7 +20,7 @@
     <app-user-order
       *ngFor="let userOrder of order.userOrders"
       [userOrder]="userOrder"
-      [orderId]="order._id"
+      (remove)="remove($event)"
     >
     </app-user-order>
   </div>
