@@ -1,13 +1,21 @@
 <div class="user-order">
-  <div>id: {{ userOrder._id }}</div>
-  <div>userId: {{ userOrder.userId }}</div>
-  <div>timestamp: {{ userOrder.timestamp }}</div>
-  <div>item: {{ userOrder.item }}</div>
-  <div>price: {{ userOrder.price }}</div>
-  <div>comment: {{ userOrder.comment }}</div>
-  <div>settled: {{ userOrder.settled }}</div>
+  <img class="avatar" src="{{ userOrder.user?.picture }}" />
 
-  <div>
+  <div class="item">
+    <div class="item-name">{{ userOrder.item }}</div>
+    <div class="item-comment">{{ userOrder.comment }}</div>
+  </div>
+
+  <div class="details">
+    <div class="price">{{ userOrder.price }} zł</div>
+    <div class="username">
+      {{ userOrder.user?.name }}
+    </div>
+  </div>
+
+  <div class="options">
     <button *ngIf="canRemove()" (click)="removeOrder()">remove</button>
+    <button>Duplicate</button>
+    <button>edit</button>
   </div>
 </div>
