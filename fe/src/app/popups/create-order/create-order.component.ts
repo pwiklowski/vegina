@@ -14,20 +14,33 @@ export class CreateOrderComponent extends PopupComponent {
   finish: Date;
   deliveryCost: number;
 
+  isEdit = false;
+
   constructor(private vege: VegeService) {
     super();
+  }
+
+  init(params: any) {
+    if (params) {
+      this.isEdit = true;
+    } else {
+      this.isEdit = false;
+    }
   }
 
   ngOnInit(): void {}
 
   async create() {
-    await this.vege.createOrder({
-      deliveryCost: this.deliveryCost,
-      start: this.start,
-      end: this.finish,
-      placeName: this.place,
-      placeUrl: this.placeUrl
-    });
+    if (this.isEdit) {
+    } else {
+      await this.vege.createOrder({
+        deliveryCost: this.deliveryCost,
+        start: this.start,
+        end: this.finish,
+        placeName: this.place,
+        placeUrl: this.placeUrl
+      });
+    }
     this.onClose.emit();
   }
 }
