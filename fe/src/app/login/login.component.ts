@@ -1,6 +1,5 @@
 import { Component, ElementRef } from "@angular/core";
 import { AuthService } from "../auth.service";
-declare const gapi: any;
 
 @Component({
   selector: "google-signin",
@@ -16,7 +15,7 @@ export class LoginComponent {
 
   ngAfterViewInit() {
     gapi.load("auth2", () => {
-      const auth2 = gapi.auth2.init({
+      const auth2: gapi.auth2.GoogleAuth = gapi.auth2.init({
         client_id: this.clientId,
         scope: this.scope,
         redirect_uri: "http://localhost:4200"
@@ -28,6 +27,12 @@ export class LoginComponent {
         googleUser => this.auth.handleLogin(googleUser),
         error => console.error(error)
       );
+
+      auth2.then(() => {
+        if (auth2.isSignedIn.get()) {
+          this.auth.handleLogin(auth2.currentUser.get());
+        }
+      });
     });
   }
 }
