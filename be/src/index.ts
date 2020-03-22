@@ -106,6 +106,7 @@ app.use(function(req, res, next) {
       if (order) {
         const orderUpdate: UpdateOrder = req.body;
         order = { ...order, ...orderUpdate };
+        await orders.replaceOne({ _id: new mongo.ObjectID(orderId) }, order);
         res.json(order);
       } else {
         res.sendStatus(400);
