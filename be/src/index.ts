@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import express = require("express");
 import * as mongo from "mongodb";
 import { Order, OrderStatus, NewOrder, UpdateOrder, UserOrder } from "./models";
@@ -6,11 +6,12 @@ import { OrderSchema } from "./schemas";
 const { Validator, ValidationError } = require("express-json-validator-middleware");
 
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const BearerStrategy = require("passport-http-bearer");
 
-
 dotenv.config();
+
+const { OAuth2Client } = require("google-auth-library");
+const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID);
 
 const app: express.Application = express();
 
@@ -26,7 +27,7 @@ app.use(
   })
 );
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -42,57 +43,21 @@ app.use(function (req, res, next) {
   const users = db.collection("users");
 
   passport.use(
-    new GoogleStrategy(
-      {
-        clientID: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: process.env.CALLBACK_URL
-      },
-      async (token: string, tokenSecret: string, profile: any, done: Function) => {
-        await users.insertOne({ profile, token });
-        done(null, { googleId: profile.id });
-      }
-    )
-  );
-
-  passport.use(
     new BearerStrategy(async (token: string, done: Function) => {
-      const user = await users.findOne({ token })
-      return done(null, user, { scope: "all" });
+      try {
+        const ticket = await oAuth2Client.verifyIdToken({ idToken: token, audience: process.env.CLIENT_ID });
+        const payload = ticket.getPayload();
+        return done(null, payload, { scope: "all" });
+      } catch (err) {
+        return done(null, null, { scope: "all" });
+      }
     })
   );
 
-  app.get("/profile",
-    passport.authenticate("bearer", { session: false }),
-    (req: express.Request, res: express.Response) => {
-      res.json(req.user.profile);
-    }
-  );
-
-  app.get("/auth/google",
-    passport.authenticate("google", {
-      session: false,
-      scope: "https://www.googleapis.com/auth/userinfo.profile"
-    })
-  );
-
-  app.get("/auth/google/callback",
-    passport.authenticate("google", {
-      session: false,
-      failureRedirect: "/login"
-    }),
-    (req, res) => {
-      res.redirect("/");
-    }
-  );
-
-  app.get("/orders",
-    passport.authenticate("bearer", { session: false }),
-    async (req: express.Request, res: express.Response) => {
-      const allOrders = await orders.find({}).toArray();
-      res.json(allOrders);
-    }
-  );
+  app.get("/orders", passport.authenticate("bearer", { session: false }), async (req: express.Request, res: express.Response) => {
+    const allOrders = await orders.find({}).toArray();
+    res.json(allOrders);
+  });
 
   app.post(
     "/orders",
@@ -121,18 +86,15 @@ app.use(function (req, res, next) {
     }
   );
 
-  app.get("/orders/:orderId",
-    passport.authenticate("bearer", { session: false }),
-    async (req: express.Request, res: express.Response) => {
-      const orderId = req.params.orderId;
-      const order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
-      if (order) {
-        res.json(order);
-      } else {
-        res.sendStatus(404);
-      }
+  app.get("/orders/:orderId", passport.authenticate("bearer", { session: false }), async (req: express.Request, res: express.Response) => {
+    const orderId = req.params.orderId;
+    const order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
+    if (order) {
+      res.json(order);
+    } else {
+      res.sendStatus(404);
     }
-  );
+  });
 
   app.patch(
     "/orders/:orderId",
@@ -154,7 +116,7 @@ app.use(function (req, res, next) {
   app.post(
     "/orders/:orderId",
     passport.authenticate("bearer", { session: false }),
-    validator.validate({ body: OrderSchema.definitions.UserOrder}),
+    validator.validate({ body: OrderSchema.definitions.UserOrder }),
     async (req: express.Request, res: express.Response) => {
       const orderId = req.params.orderId;
 
@@ -176,7 +138,8 @@ app.use(function (req, res, next) {
     }
   );
 
-  app.delete("/orders/:orderId",
+  app.delete(
+    "/orders/:orderId",
     passport.authenticate("bearer", { session: false }),
     async (req: express.Request, res: express.Response) => {
       const orderId = req.params.orderId;
@@ -185,7 +148,8 @@ app.use(function (req, res, next) {
     }
   );
 
-  app.delete("/orders/:orderId/:userOrderId",
+  app.delete(
+    "/orders/:orderId/:userOrderId",
     passport.authenticate("bearer", { session: false }),
     async (req: express.Request, res: express.Response) => {
       const orderId = req.params.orderId;
@@ -193,17 +157,16 @@ app.use(function (req, res, next) {
 
       let order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
       if (order) {
-
         const userOrderIndex = order.userOrders.findIndex((userOrder: UserOrder) => userOrder._id === userOrderId);
-        console.log(userOrderIndex)
+        console.log(userOrderIndex);
         if (userOrderIndex < 0) {
           res.sendStatus(400);
-          return
+          return;
         }
 
         order.userOrders = order.userOrders.filter((userOrder: UserOrder) => userOrder._id !== userOrderId);
 
-        console.log(order)
+        console.log(order);
 
         await orders.replaceOne({ _id: new mongo.ObjectID(orderId) }, order);
         res.sendStatus(204);
@@ -213,7 +176,7 @@ app.use(function (req, res, next) {
     }
   );
 
-  app.use(function (err: any, req: any, res: any, next: any) {
+  app.use(function(err: any, req: any, res: any, next: any) {
     if (err instanceof ValidationError) {
       res.statusCode = 422;
       res.json(err);

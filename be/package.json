@@ -24,10 +24,10 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-json-validator-middleware": "^2.0.0",
+    "google-auth-library": "^5.10.1",
     "jsonschema": "^1.2.5",
     "mongodb": "^3.4.1",
     "passport": "^0.4.1",
-    "passport-google-oauth": "^2.0.0",
     "passport-http-bearer": "^1.0.1",
     "ts-json-schema-generator": "^0.58.1"
   },
