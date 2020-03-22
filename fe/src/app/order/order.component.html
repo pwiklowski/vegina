@@ -1,24 +1,42 @@
 <div class="order box">
-  <div>
-    order
-
+  <div class="options">
     <button *ngIf="canEdit()" (click)="edit()">Edit</button>
   </div>
 
-  <div>place: {{ order.placeName }}</div>
-  <div>placeUrl: {{ order.placeUrl }}</div>
+  <div class="name">{{ order.placeName }}</div>
+  <div>{{ order.placeUrl }}</div>
 
-  <div>start: {{ order.start }}</div>
+  <div class="essensials">
+    <div class="essensials-item">
+      start: <br />
+      {{ order.start | date: "shortTime" }}
+    </div>
 
-  <div>finish: {{ order.end }}</div>
+    <div class="essensials-item">
+      finish: <br />
+      {{ order.end | date: "shortTime" }}
+    </div>
 
-  <div>status: {{ order.status }}</div>
+    <div class="essensials-item">
+      status: <br />
+      {{ order.status }}
+    </div>
 
-  <div>deliveryCost: {{ order.deliveryCost }}</div>
+    <div class="essensials-item">
+      deliveryCost:<br />
+      {{ order.deliveryCost }} zł
+    </div>
 
-  <div>
-    orders:
+    <div class="essensials-item">
+      master:
+      <img class="icon" src="{{ order.master?.picture }}" />
+      <div class="master-name">
+        {{ order.master?.name }}
+      </div>
+    </div>
+  </div>
 
+  <div class="user-orders">
     <app-user-order
       *ngFor="let userOrder of order.userOrders"
       [userOrder]="userOrder"
