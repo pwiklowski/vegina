@@ -30,21 +30,24 @@ export class OrderComponent {
       PlaceUserOrderComponent,
       { orderId: this.order._id },
       async () => {
-        this.order = await this.vege.getOrder(this.order._id);
+        this.zone.run(async () => {
+          this.order = await this.vege.getOrder(this.order._id);
+        });
       }
     );
   }
 
   async remove(userOrderId: string) {
-    await this.vege.removeUserOrder(this.order._id, userOrderId);
-    this.order = await this.vege.getOrder(this.order._id);
+    this.zone.run(async () => {
+      await this.vege.removeUserOrder(this.order._id, userOrderId);
+      this.order = await this.vege.getOrder(this.order._id);
+    });
   }
 
   edit() {
     this.popup.openPopup(CreateOrderComponent, { order: this.order }, () => {
       this.zone.run(async () => {
         this.order = await this.vege.getOrder(this.order._id);
-        console.log(this.order);
       });
     });
   }

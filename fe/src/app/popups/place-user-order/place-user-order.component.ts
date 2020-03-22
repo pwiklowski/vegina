@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, NgZone, ChangeDetectorRef } from "@angular/core";
 import { PopupComponent } from "../popup/popup.component";
 import { VegeService } from "../../vege.service";
 
@@ -10,28 +10,26 @@ import { VegeService } from "../../vege.service";
 export class PlaceUserOrderComponent extends PopupComponent {
   orderId: string;
 
-  item: string;
-  price: number;
-  comment: string;
+  public item: string;
+  public price: number;
+  public comment: string;
 
-  constructor(private vege: VegeService) {
+  constructor(private vege: VegeService, private cd: ChangeDetectorRef) {
     super();
   }
-
-  ngOnInit(): void {}
 
   init(params: any) {
     this.orderId = params.orderId;
   }
 
-  addOrder() {
+  async addOrder() {
     const userOrder = {
       item: this.item,
-      price: this.price,
+      price: parseFloat(this.price),
       comment: this.comment
     };
 
-    this.vege.addUserOrder(this.orderId, userOrder);
+    await this.vege.addUserOrder(this.orderId, userOrder);
     this.onClose.emit();
   }
 }

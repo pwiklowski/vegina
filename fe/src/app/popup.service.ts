@@ -21,7 +21,9 @@ export class PopupService {
   openPopup(popup, params?: any, onCloseCallback?: Function) {
     const ref = this.componentFactoryResolver.resolveComponentFactory(popup);
     const componentRef = this.popupContainer.createComponent(ref);
+
     (componentRef.instance as PopupComponent).init(params);
+    componentRef.changeDetectorRef.detectChanges();
     (componentRef.instance as PopupComponent).onClose.subscribe(() => {
       this.popupContainer.clear();
 

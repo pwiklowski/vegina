@@ -37,7 +37,6 @@ export class CreateOrderComponent extends PopupComponent {
       this.finish = order.end;
       this.deliveryCost = order.deliveryCost;
     }
-    this.cd.detectChanges();
   }
 
   ngOnInit(): void {}
