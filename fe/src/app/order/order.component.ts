@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { Order } from "../../../../be/src/models";
 import { PopupService } from "../popup.service";
-import { PlaceUserOrderComponent } from "../place-user-order/place-user-order.component";
+import { PlaceUserOrderComponent } from "../popups/place-user-order/place-user-order.component";
 import { VegeService } from "../vege.service";
 
 @Component({

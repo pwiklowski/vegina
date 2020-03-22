@@ -8,7 +8,7 @@ import {
 import { VegeService } from "./vege.service";
 import { Order } from "../../../be/src/models";
 import { PopupService } from "./popup.service";
-import { CreateOrderComponent } from "./create-order/create-order.component";
+import { CreateOrderComponent } from "./popups/create-order/create-order.component";
 import { AuthService } from "./auth.service";
 
 @Component({

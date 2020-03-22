@@ -5,11 +5,11 @@ import { BrowserModule } from "@angular/platform-browser";
 import { TokenInterceptor } from "src/token.interceptor";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { CreateOrderComponent } from "./create-order/create-order.component";
+import { CreateOrderComponent } from "./popups/create-order/create-order.component";
 import { LoginComponent } from "./login/login.component";
 import { OrderComponent } from "./order/order.component";
-import { PlaceUserOrderComponent } from "./place-user-order/place-user-order.component";
-import { PopupComponent } from "./popup/popup.component";
+import { PlaceUserOrderComponent } from "./popups/place-user-order/place-user-order.component";
+import { PopupComponent } from "./popups/popup/popup.component";
 import { UserOrderComponent } from "./user-order/user-order.component";
 
 @NgModule({

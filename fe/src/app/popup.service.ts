@@ -1,5 +1,5 @@
 import { ComponentFactoryResolver, Injectable, ViewContainerRef, Type } from '@angular/core';
-import { PopupComponent } from './popup/popup.component';
+import { PopupComponent } from "./popups/popup/popup.component";
 
 @Injectable({
   providedIn: 'root'

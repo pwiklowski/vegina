@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { PopupComponent } from "../popup/popup.component";
-import { VegeService } from "../vege.service";
+import { VegeService } from "../../vege.service";
 
 @Component({
   selector: "app-create-order",
