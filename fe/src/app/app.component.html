@@ -1,20 +1,19 @@
-<div class="page">
+<div class="page" *ngIf="!authorized">
+  <google-signin></google-signin>
+</div>
+
+<div class="page" *ngIf="authorized">
   <div class="nav-top">
-    <img class="nav-avatar" src="{{ user?.photos[0].value}}">
-    <div class="nav-username">{{ user?.displayName }}</div>
+    <img class="nav-avatar" src="{{ profile?.getImageUrl() }}" />
+    <div class="nav-username">{{ profile?.getName() }}</div>
 
     <button (click)="createOrder()">Add order</button>
   </div>
 
   <div class="content">
-
-    <app-order *ngFor="let order of orders" [order]="order">
-      
-    </app-order>
-
+    <app-order *ngFor="let order of orders" [order]="order"> </app-order>
   </div>
 
   <router-outlet></router-outlet>
   <div #popupContainer></div>
 </div>
-

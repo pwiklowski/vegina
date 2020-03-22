@@ -6,7 +6,7 @@ import { Order, UserOrder, NewOrder } from "../../../be/src/models";
   providedIn: "root"
 })
 export class VegeService {
-  BASE_URL = "http://127.0.0.1:4200/api";
+  BASE_URL = "http://localhost:4200/api";
 
   constructor(private http: HttpClient) {}
 
