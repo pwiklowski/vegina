@@ -4,6 +4,7 @@ import { PopupService } from "../popup.service";
 import { PlaceUserOrderComponent } from "../popups/place-user-order/place-user-order.component";
 import { VegeService } from "../vege.service";
 import { CreateOrderComponent } from "../popups/create-order/create-order.component";
+import { AuthService } from "../auth.service";
 
 @Component({
   selector: "app-order",
@@ -16,8 +17,13 @@ export class OrderComponent {
   constructor(
     private popup: PopupService,
     private vege: VegeService,
-    private zone: NgZone
+    private zone: NgZone,
+    private auth: AuthService
   ) {}
+
+  canEdit() {
+    return this.order.masterUserId === this.auth.getProfile().getId();
+  }
 
   openPopup() {
     this.popup.openPopup(

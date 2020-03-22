@@ -65,7 +65,7 @@ app.use(function(req, res, next) {
     validator.validate({ body: OrderSchema.definitions.NewOrder }),
     async (req: express.Request, res: express.Response) => {
       const newOrder: NewOrder = req.body;
-      const userId = req.user.profile.id;
+      const userId = req.user.sub;
 
       const order: Order = {
         ...newOrder,
@@ -104,6 +104,10 @@ app.use(function(req, res, next) {
       const orderId = req.params.orderId;
       let order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
       if (order) {
+        if (order.masterUserId !== req.user.sub) {
+          return res.sendStatus(403);
+        }
+
         const orderUpdate: UpdateOrder = req.body;
         order = { ...order, ...orderUpdate };
         await orders.replaceOne({ _id: new mongo.ObjectID(orderId) }, order);
@@ -126,7 +130,7 @@ app.use(function(req, res, next) {
         const userOrder: UserOrder = req.body;
         userOrder._id = new mongo.ObjectID().toHexString();
         userOrder.timestamp = new Date();
-        userOrder.userId = req.user.profile.id;
+        userOrder.userId = req.user.sub;
         userOrder.settled = false;
 
         order.userOrders.push(userOrder);
