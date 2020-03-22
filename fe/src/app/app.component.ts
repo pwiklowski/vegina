@@ -7,7 +7,7 @@ import {
 import { VegeService } from "./vege.service";
 import { Order } from "../../../be/src/models";
 import { PopupService } from "./popup.service";
-import { CreateOrderComponent } from './create-order/create-order.component';
+import { CreateOrderComponent } from "./create-order/create-order.component";
 
 @Component({
   selector: "app-root",
@@ -39,6 +39,8 @@ export class AppComponent {
   }
 
   createOrder() {
-    this.popupService.openPopup(CreateOrderComponent)
+    this.popupService.openPopup(CreateOrderComponent, {}, async () => {
+      this.orders = await this.service.getOrders();
+    });
   }
 }

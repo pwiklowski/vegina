@@ -12,6 +12,7 @@ export interface Order {
 }
 
 export interface NewOrder {
+  start?: Date;
   end: Date;
   placeName: string;
   placeUrl: string;

@@ -1,3 +1,15 @@
 <popup>
   <p>create-order works!</p>
+  <input placeholder="Place" [(ngModel)]="place" />
+  <input placeholder="Place Url" [(ngModel)]="placeUrl" />
+  <input placeholder="Start" [(ngModel)]="start" />
+  <input placeholder="Finish" [(ngModel)]="finish" />
+
+  <input
+    placeholder="Delivery cost"
+    inputmode="numeric"
+    [(ngModel)]="deliveryCost"
+  />
+
+  <button (click)="create()">Create</button>
 </popup>
