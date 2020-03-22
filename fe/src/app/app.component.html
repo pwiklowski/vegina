@@ -4,10 +4,14 @@
 
 <div class="page" *ngIf="authorized">
   <div class="nav-top">
+    <img class="logo" src="/assets/logo.png" />
+
+    <div class="controls">
+      <button (click)="createOrder()">Add order</button>
+    </div>
+
     <img class="nav-avatar" src="{{ profile?.getImageUrl() }}" />
     <div class="nav-username">{{ profile?.getName() }}</div>
-
-    <button (click)="createOrder()">Add order</button>
   </div>
 
   <div class="content">
