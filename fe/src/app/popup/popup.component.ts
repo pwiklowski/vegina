@@ -7,8 +7,6 @@ import { BehaviorSubject } from "rxjs";
   styleUrls: ["./popup.component.less"]
 })
 export class PopupComponent implements OnInit {
-  hidden = false;
-
   onClose: EventEmitter<void> = new EventEmitter();
 
   constructor() {}
@@ -17,12 +15,7 @@ export class PopupComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  show() {
-    this.hidden = false;
-  }
-
   close() {
-    this.hidden = true;
     this.onClose.emit();
   }
 }
