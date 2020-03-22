@@ -3,5 +3,7 @@
   <input placeholder="Item" [(ngModel)]="item" />
   <input placeholder="Price" [(ngModel)]="price" />
   <input placeholder="Comment" [(ngModel)]="comment" />
-  <button (click)="addOrder()">Close</button>
+
+  <button *ngIf="!userOrderId" (click)="addOrder()">Add order</button>
+  <button *ngIf="userOrderId" (click)="editOrder()">Edit order</button>
 </popup>

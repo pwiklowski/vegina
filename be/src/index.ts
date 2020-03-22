@@ -200,6 +200,44 @@ const createUserMetaData = (user: any): UserMetaData => {
     }
   );
 
+  app.patch(
+    "/orders/:orderId/:userOrderId",
+    passport.authenticate("bearer", { session: false }),
+    async (req: express.Request, res: express.Response) => {
+      const orderId = req.params.orderId;
+      const userOrderId = req.params.userOrderId;
+
+      let order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
+      if (order) {
+        const userOrderIndex = order.userOrders.findIndex((userOrder: UserOrder) => userOrder._id === userOrderId);
+        console.log(userOrderIndex);
+        if (userOrderIndex < 0) {
+          res.sendStatus(400);
+          return;
+        }
+
+        if (order.userOrders[userOrderIndex].userId !== req.user.sub) {
+          res.sendStatus(403);
+          return;
+        }
+
+        const userOrder: UserOrder = req.body;
+        userOrder._id = new mongo.ObjectID().toHexString();
+        userOrder.timestamp = new Date();
+        userOrder.userId = req.user.sub;
+        userOrder.user = createUserMetaData(req.user);
+        userOrder.settled = false;
+
+        order.userOrders[userOrderIndex] = userOrder;
+
+        await orders.replaceOne({ _id: new mongo.ObjectID(orderId) }, order);
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(400);
+      }
+    }
+  );
+
   app.use(function(err: any, req: any, res: any, next: any) {
     if (err instanceof ValidationError) {
       res.statusCode = 422;

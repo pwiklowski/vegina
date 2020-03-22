@@ -14,8 +14,8 @@
   </div>
 
   <div class="options">
-    <button *ngIf="canRemove()" (click)="removeOrder()">remove</button>
-    <button>Duplicate</button>
-    <button>edit</button>
+    <button *ngIf="canRemove()" (click)="removeOrder()">Remove</button>
+    <button (click)="duplicate()">Duplicate</button>
+    <button *ngIf="canEdit()" (click)="edit()">Edit</button>
   </div>
 </div>

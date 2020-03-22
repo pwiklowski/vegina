@@ -9,9 +9,10 @@ import { VegeService } from "../../vege.service";
 })
 export class PlaceUserOrderComponent extends PopupComponent {
   orderId: string;
+  userOrderId: string;
 
   public item: string;
-  public price: number;
+  public price: string;
   public comment: string;
 
   constructor(private vege: VegeService, private cd: ChangeDetectorRef) {
@@ -20,6 +21,10 @@ export class PlaceUserOrderComponent extends PopupComponent {
 
   init(params: any) {
     this.orderId = params.orderId;
+    this.userOrderId = params.userOrderId;
+    this.item = params.item;
+    this.price = params.price;
+    this.comment = params.comment;
   }
 
   async addOrder() {
@@ -30,6 +35,17 @@ export class PlaceUserOrderComponent extends PopupComponent {
     };
 
     await this.vege.addUserOrder(this.orderId, userOrder);
+    this.onClose.emit();
+  }
+
+  async editOrder() {
+    const userOrder = {
+      item: this.item,
+      price: parseFloat(this.price),
+      comment: this.comment
+    };
+
+    await this.vege.editUserOrder(this.orderId, this.userOrderId, userOrder);
     this.onClose.emit();
   }
 }

@@ -37,9 +37,8 @@ export class OrderComponent {
     );
   }
 
-  async remove(userOrderId: string) {
+  async refresh() {
     this.zone.run(async () => {
-      await this.vege.removeUserOrder(this.order._id, userOrderId);
       this.order = await this.vege.getOrder(this.order._id);
     });
   }

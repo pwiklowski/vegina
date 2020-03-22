@@ -43,6 +43,12 @@ export class VegeService {
       .toPromise() as Promise<Array<Order>>;
   }
 
+  async editUserOrder(orderId: string, userOrderId, userOrder: UserOrder) {
+    return this.http
+      .patch(`${this.BASE_URL}/orders/${orderId}/${userOrderId}`, userOrder)
+      .toPromise() as Promise<Order>;
+  }
+
   async removeUserOrder(orderId: string, userOrderId: string) {
     return this.http
       .delete(`${this.BASE_URL}/orders/${orderId}/${userOrderId}`)
