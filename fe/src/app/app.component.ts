@@ -3,7 +3,8 @@ import {
   ViewChild,
   ViewContainerRef,
   ElementRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  NgZone
 } from "@angular/core";
 import { VegeService } from "./vege.service";
 import { Order } from "../../../be/src/models";
@@ -29,16 +30,18 @@ export class AppComponent {
     private service: VegeService,
     private popupService: PopupService,
     private auth: AuthService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private zone: NgZone
   ) {}
 
   ngOnInit() {
     this.auth.login.subscribe(async (profile: gapi.auth2.BasicProfile) => {
-      console.log("logged", profile);
-      this.profile = profile;
-      this.authorized = true;
-      this.orders = await this.service.getOrders();
-      this.cd.detectChanges();
+      this.zone.run(async () => {
+        console.log("logged", profile);
+        this.profile = profile;
+        this.authorized = true;
+        this.orders = await this.service.getOrders();
+      });
     });
   }
 
