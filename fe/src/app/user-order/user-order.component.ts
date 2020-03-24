@@ -33,7 +33,6 @@ export class UserOrderComponent {
 
   ngOnInit() {
     this.owner = this.userOrder.userId === this.auth.getProfile().getId();
-    console.log(this.owner);
   }
 
   async removeOrder() {

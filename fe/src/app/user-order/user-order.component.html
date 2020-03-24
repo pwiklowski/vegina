@@ -20,10 +20,18 @@
     <div class="menu" (click)="openMenu($event)"></div>
   </div>
   <div class="options" [class.opened]="isOpened" [class.owner]="owner">
-    <button class="option" *ngIf="canRemove()" (click)="removeOrder()">
-      Remove
-    </button>
-    <button class="option" (click)="duplicate()">Duplicate</button>
-    <button class="option" *ngIf="canEdit()" (click)="edit()">Edit</button>
+    <div class="option" *ngIf="canRemove()" (click)="removeOrder()">
+      <div class="icon remove"></div>
+      <div class="icon-label">Remove</div>
+    </div>
+
+    <div class="option duplicate" (click)="duplicate()">
+      <div class="icon duplicate"></div>
+      <div class="icon-label">Duplicate</div>
+    </div>
+    <div class="option edit" *ngIf="canEdit()" (click)="edit()">
+      <div class="icon edit"></div>
+      <div class="icon-label">Edit</div>
+    </div>
   </div>
 </div>

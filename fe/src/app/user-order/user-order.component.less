@@ -50,6 +50,34 @@
 .option {
   width: @height;
   height: @height;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  opacity: 0.4;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  &.remove {
+    background-image: url("/assets/icons/delete.svg");
+  }
+
+  &.duplicate {
+    background-image: url("/assets/icons/add.svg");
+  }
+
+  &.edit {
+    background-image: url("/assets/icons/settings.svg");
+  }
 }
 
 .user-order:hover {
