@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef
+} from "@angular/core";
 import { UserOrder } from "../../../../be/src/models";
 import { VegeService } from "../vege.service";
 import { AuthService } from "../auth.service";
@@ -10,7 +17,9 @@ import { PlaceUserOrderComponent } from "../popups/place-user-order/place-user-o
   templateUrl: "./user-order.component.html",
   styleUrls: ["./user-order.component.less"]
 })
-export class UserOrderComponent implements OnInit {
+export class UserOrderComponent {
+  isOpened = false;
+  owner = false;
   @Input() userOrder: UserOrder;
   @Input() orderId: string;
 
@@ -22,7 +31,10 @@ export class UserOrderComponent implements OnInit {
     private popup: PopupService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.owner = this.userOrder.userId === this.auth.getProfile().getId();
+    console.log(this.owner);
+  }
 
   async removeOrder() {
     await this.vege.removeUserOrder(this.orderId, this.userOrder._id);
@@ -66,5 +78,14 @@ export class UserOrderComponent implements OnInit {
         this.refresh.emit();
       }
     );
+  }
+
+  openMenu(event) {
+    this.isOpened = true;
+    event.stopPropagation();
+  }
+
+  closeMenu() {
+    this.isOpened = false;
   }
 }

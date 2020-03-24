@@ -1,12 +1,59 @@
 @height: 80px;
 
 .user-order {
-  font-size: 18px;
   border-top: 1px #ccc solid;
+  height: @height;
+  overflow: hidden;
+  position: relative;
+}
+
+.content {
+  position: relative;
+  font-size: 18px;
   height: @height;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  transition: all 300ms ease;
+
+  &.opened.owner {
+    transform: translate(-3 * @height, 0);
+  }
+
+  &.opened {
+    transform: translate(-@height, 0);
+  }
+}
+
+.options {
+  position: absolute;
+  transition: all 300ms ease;
+  display: flex;
+  flex-direction: row;
+  top: 0px;
+  right: -@height;
+
+  &.owner {
+    right: -3 * @height;
+  }
+
+  &.opened.owner {
+    transform: translate(-3 * @height, 0);
+  }
+
+  &.opened {
+    transform: translate(-@height, 0);
+  }
+}
+
+.option {
+  width: @height;
+  height: @height;
+}
+
+.user-order:hover {
+  background-color: #f3f3f3;
 }
 
 .avatar {
@@ -43,7 +90,11 @@
   padding: 20px;
 }
 
-.options {
-  display: flex;
-  flex-direction: column;
+.menu {
+  background-image: url("/assets/menu.png");
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 70px;
+  background-size: contain;
+  background-position: center;
 }

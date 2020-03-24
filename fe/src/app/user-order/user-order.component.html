@@ -1,21 +1,29 @@
 <div class="user-order">
-  <img class="avatar" src="{{ userOrder.user?.picture }}" />
-
-  <div class="item">
-    <div class="item-name">{{ userOrder.item }}</div>
-    <div class="item-comment">{{ userOrder.comment }}</div>
-  </div>
-
-  <div class="details">
-    <div class="price">{{ userOrder.price }} zł</div>
-    <div class="username">
-      {{ userOrder.user?.name }}
+  <div
+    class="content"
+    [class.opened]="isOpened"
+    [class.owner]="owner"
+    (click)="closeMenu()"
+  >
+    <img class="avatar" src="{{ userOrder.user?.picture }}" />
+    <div class="item">
+      <div class="item-name">{{ userOrder.item }}</div>
+      <div class="item-comment">{{ userOrder.comment }}</div>
     </div>
-  </div>
 
-  <div class="options">
-    <button *ngIf="canRemove()" (click)="removeOrder()">Remove</button>
-    <button (click)="duplicate()">Duplicate</button>
-    <button *ngIf="canEdit()" (click)="edit()">Edit</button>
+    <div class="details">
+      <div class="price">{{ userOrder.price }} zł</div>
+      <div class="username">
+        {{ userOrder.user?.name }}
+      </div>
+    </div>
+    <div class="menu" (click)="openMenu($event)"></div>
+  </div>
+  <div class="options" [class.opened]="isOpened" [class.owner]="owner">
+    <button class="option" *ngIf="canRemove()" (click)="removeOrder()">
+      Remove
+    </button>
+    <button class="option" (click)="duplicate()">Duplicate</button>
+    <button class="option" *ngIf="canEdit()" (click)="edit()">Edit</button>
   </div>
 </div>
