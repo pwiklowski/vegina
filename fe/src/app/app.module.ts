@@ -30,7 +30,7 @@ import { UserOrderComponent } from "./user-order/user-order.component";
       multi: true
     }
   ],
-  entryComponents: [PlaceUserOrderComponent],
+  entryComponents: [PlaceUserOrderComponent, CreateOrderComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

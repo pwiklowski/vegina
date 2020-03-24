@@ -1,6 +1,6 @@
 <div class="order box">
   <div class="options">
-    <button *ngIf="canEdit()" (click)="edit()">Edit</button>
+    <div class="edit" *ngIf="canEdit()" (click)="edit()"></div>
   </div>
 
   <div class="name">{{ order.placeName }}</div>
@@ -42,8 +42,7 @@
       [userOrder]="userOrder"
       [orderId]="order._id"
       (refresh)="refresh()"
-    >
-    </app-user-order>
+    ></app-user-order>
   </div>
 
   <button (click)="openPopup()">add</button>
