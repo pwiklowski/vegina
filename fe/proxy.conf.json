@@ -1,4 +1,12 @@
 {
+  "/api/pyszne": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/pyszne": ""
+    }
+  },
   "/api": {
     "target": "http://localhost:8080",
     "secure": false,
