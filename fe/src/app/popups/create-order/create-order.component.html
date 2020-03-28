@@ -1,18 +1,77 @@
-<popup>
-  <button (click)="close()">close</button>
-  <p>create-order works!</p>
-  <input placeholder="Place" [(ngModel)]="place" />
-  <input placeholder="Place Url" [(ngModel)]="placeUrl" />
-  <input placeholder="Start" [(ngModel)]="start" />
-  <input placeholder="Finish" [(ngModel)]="finish" />
+<div #modal id="create-order-modal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4 class="green-text">Create new order</h4>
 
-  <input
-    placeholder="Delivery cost"
-    inputmode="decimal"
-    [(ngModel)]="deliveryCost"
-  />
+    <div class="divider"></div>
+    <h5>Restaurant</h5>
+    <div class="input-field col s12">
+      <input
+        #placeElement
+        type="text"
+        class="autocomplete"
+        [(ngModel)]="placeName"
+      />
+      <label>Enter restaurant name</label>
+    </div>
 
-  <button *ngIf="!isEdit" (click)="create()">Create</button>
+    <div class="input-field col s6">
+      <label for="placeurl-input">Place url</label>
+      <input type="text" id="placeurl-input" [(ngModel)]="placeUrl" />
+    </div>
 
-  <button *ngIf="isEdit" (click)="edit()">edit</button>
-</popup>
+    <div class="divider"></div>
+
+    <div class="row">
+      <h5>Time</h5>
+      <div class="input-field col s4">
+        <label>Select date</label>
+        <input #datepicker type="text" class="datepicker" />
+      </div>
+
+      <div class="input-field col s4">
+        <label>Select start hour</label>
+        <input #starttime type="text" class="timepicker" [(ngModel)]="start" />
+      </div>
+      <div class="input-field col s4">
+        <label>Select end hour</label>
+        <input #endtime type="text" class="timepicker" [(ngModel)]="finish" />
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="row">
+      <h5>Delivery</h5>
+      <div class="input-field col s6">
+        <label for="deliveryCost">Delivery cost</label>
+        <input id="deliveryCost" type="text" [(ngModel)]="deliveryCost" />
+      </div>
+      <div class="input-field col s6">
+        <label>Minimum order value</label>
+        <input type="text" [(ngModel)]="minimumOrderValue" />
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">
+      Cancel
+    </a>
+    <a
+      href="#!"
+      class="waves-effect waves-green btn"
+      *ngIf="!isEdit"
+      (click)="create()"
+    >
+      Create
+    </a>
+
+    <a
+      href="#!"
+      class="waves-effect waves-green btn"
+      *ngIf="isEdit"
+      (click)="edit()"
+    >
+      Edit
+    </a>
+  </div>
+</div>

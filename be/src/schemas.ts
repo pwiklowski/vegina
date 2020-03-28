@@ -7,6 +7,9 @@ export const OrderSchema = {
         deliveryCost: {
           type: "number"
         },
+        minimumOrderValue: {
+          type: "number"
+        },
         end: {
           description: "Enables basic storage and retrieval of dates and times.",
           format: "date-time",
@@ -17,6 +20,9 @@ export const OrderSchema = {
         },
         placeUrl: {
           type: "string"
+        },
+        placeMetadata: {
+          type: "object"
         }
       },
       type: "object"
@@ -28,6 +34,9 @@ export const OrderSchema = {
           type: "string"
         },
         deliveryCost: {
+          type: "number"
+        },
+        minimumOrderValue: {
           type: "number"
         },
         end: {
@@ -60,6 +69,9 @@ export const OrderSchema = {
             $ref: "#/definitions/UserOrder"
           },
           type: "array"
+        },
+        placeMetadata: {
+          type: "object"
         }
       },
       type: "object"
@@ -72,6 +84,9 @@ export const OrderSchema = {
       additionalProperties: false,
       properties: {
         deliveryCost: {
+          type: "number"
+        },
+        minimumOrderValue: {
           type: "number"
         },
         end: {
@@ -90,6 +105,9 @@ export const OrderSchema = {
         },
         status: {
           type: "string"
+        },
+        placeMetadata: {
+          type: "object"
         }
       },
       type: "object"
@@ -104,9 +122,8 @@ export const OrderSchema = {
           type: "string"
         },
         price: {
-          type: "number",
-          
-        },
+          type: "number"
+        }
       },
       type: "object",
       required: ["item", "price"]

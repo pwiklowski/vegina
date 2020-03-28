@@ -47,11 +47,7 @@ export class AppComponent {
 
   ngAfterViewInit() {
     this.popupService.init(this.popupContainer);
-  }
 
-  createOrder() {
-    this.popupService.openPopup(CreateOrderComponent, null, async () => {
-      this.orders = await this.service.getOrders();
-    });
+    const elems = document.querySelectorAll(".modal");
   }
 }

@@ -10,6 +10,8 @@ export interface Order {
   initiatorUserId: string;
   userOrders: UserOrder[];
   status: string;
+  placeMetadata?: Object;
+  minimumOrderValue: number;
 }
 
 export interface NewOrder {
@@ -18,6 +20,8 @@ export interface NewOrder {
   placeName: string;
   placeUrl: string;
   deliveryCost: number;
+  placeMetadata?: Object;
+  minimumOrderValue: number;
 }
 
 export interface UpdateOrder {
@@ -27,6 +31,8 @@ export interface UpdateOrder {
   deliveryCost?: number;
   masterUserId?: string;
   status?: string;
+  placeMetadata?: Object;
+  minimumOrderValue: number;
 }
 
 export interface UserOrder {

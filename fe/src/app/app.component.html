@@ -5,20 +5,21 @@
 <div class="page" *ngIf="authorized">
   <div class="nav-top">
     <img class="app-name" src="/assets/name.png" />
-
-    <div class="controls">
-      <button (click)="createOrder()">Add order</button>
-    </div>
-
     <img class="nav-avatar" src="{{ profile?.getImageUrl() }}" />
     <div class="nav-username">{{ profile?.getName() }}</div>
   </div>
+  <a
+    class="btn-floating btn-large waves-effect waves-light green modal-trigger add-order-button"
+    data-target="create-order-modal"
+  >
+    <i class="material-icons">add_shopping_cart</i>
+  </a>
 
   <div class="content">
     <app-order *ngFor="let order of orders" [order]="order"> </app-order>
   </div>
-
-  <router-outlet></router-outlet>
 </div>
+
+<app-create-order></app-create-order>
 
 <div #popupContainer></div>
