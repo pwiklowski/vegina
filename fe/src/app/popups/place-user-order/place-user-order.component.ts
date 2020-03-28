@@ -1,5 +1,13 @@
-import { Component, NgZone, ChangeDetectorRef } from "@angular/core";
+import {
+  Component,
+  NgZone,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef
+} from "@angular/core";
 import { VegeService } from "../../vege.service";
+import { Modal } from "materialize-css";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-place-user-order",
@@ -7,6 +15,11 @@ import { VegeService } from "../../vege.service";
   styleUrls: ["./place-user-order.component.less"]
 })
 export class PlaceUserOrderComponent {
+  @ViewChild("placeUserOrder") modalElement: ElementRef;
+  modal: Modal;
+
+  success = new Subject();
+
   orderId: string;
   userOrderId: string;
 
@@ -15,6 +28,10 @@ export class PlaceUserOrderComponent {
   public comment: string;
 
   constructor(private vege: VegeService, private cd: ChangeDetectorRef) {}
+
+  async ngAfterViewInit() {
+    this.modal = M.Modal.init(this.modalElement.nativeElement, {});
+  }
 
   init(params: any) {
     this.orderId = params.orderId;
@@ -32,6 +49,7 @@ export class PlaceUserOrderComponent {
     };
 
     await this.vege.addUserOrder(this.orderId, userOrder);
+    this.success.next();
   }
 
   async editOrder() {
@@ -42,5 +60,19 @@ export class PlaceUserOrderComponent {
     };
 
     await this.vege.editUserOrder(this.orderId, this.userOrderId, userOrder);
+    this.close();
+    this.success.next();
+  }
+
+  open() {
+    this.modal.open();
+  }
+
+  close() {
+    this.modal.close();
+  }
+
+  isEdit() {
+    return !!this.userOrderId;
   }
 }

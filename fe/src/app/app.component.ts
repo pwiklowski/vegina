@@ -12,6 +12,7 @@ import { PopupService } from "./popup.service";
 import { CreateOrderComponent } from "./popups/create-order/create-order.component";
 import { AuthService } from "./auth.service";
 import { UserOrderComponent } from "./user-order/user-order.component";
+import { PlaceUserOrderComponent } from "./popups/place-user-order/place-user-order.component";
 
 @Component({
   selector: "app-root",
@@ -19,8 +20,11 @@ import { UserOrderComponent } from "./user-order/user-order.component";
   styleUrls: ["./app.component.less"]
 })
 export class AppComponent {
-  @ViewChild(CreateOrderComponent) createOrderComponent: CreateOrderComponent;
-  @ViewChild(UserOrderComponent) userOrderComponent: UserOrderComponent;
+  @ViewChild(CreateOrderComponent)
+  createOrderComponent: CreateOrderComponent;
+
+  @ViewChild(PlaceUserOrderComponent)
+  placeUserOrderComponent: PlaceUserOrderComponent;
 
   authorized = false;
 
@@ -50,6 +54,9 @@ export class AppComponent {
   }
 
   ngAfterViewInit() {
-    this.popupService.init(this.createOrderComponent, this.userOrderComponent);
+    this.popupService.init(
+      this.createOrderComponent,
+      this.placeUserOrderComponent
+    );
   }
 }

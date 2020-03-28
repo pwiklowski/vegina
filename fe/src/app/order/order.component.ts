@@ -24,15 +24,13 @@ export class OrderComponent {
   }
 
   openPopup() {
-    this.popup.openPopup(
-      PlaceUserOrderComponent,
-      { orderId: this.order._id },
-      async () => {
-        this.zone.run(async () => {
-          this.order = await this.vege.getOrder(this.order._id);
-        });
-      }
-    );
+    this.popup.placeUserOrderComponent.init({ orderId: this.order._id });
+    this.popup.placeUserOrderComponent.open();
+    this.popup.placeUserOrderComponent.success.subscribe(() => {
+      this.zone.run(async () => {
+        this.order = await this.vege.getOrder(this.order._id);
+      });
+    });
   }
 
   async refresh() {
