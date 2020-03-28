@@ -9,17 +9,16 @@ import { CreateOrderComponent } from "./popups/create-order/create-order.compone
 import { LoginComponent } from "./login/login.component";
 import { OrderComponent } from "./order/order.component";
 import { PlaceUserOrderComponent } from "./popups/place-user-order/place-user-order.component";
-import { PopupComponent } from "./popups/popup/popup.component";
 import { UserOrderComponent } from "./user-order/user-order.component";
 
 @NgModule({
   declarations: [
     AppComponent,
+
     OrderComponent,
     UserOrderComponent,
     PlaceUserOrderComponent,
     CreateOrderComponent,
-    PopupComponent,
     LoginComponent
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],

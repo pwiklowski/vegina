@@ -11,6 +11,7 @@ import { Order } from "../../../be/src/models";
 import { PopupService } from "./popup.service";
 import { CreateOrderComponent } from "./popups/create-order/create-order.component";
 import { AuthService } from "./auth.service";
+import { UserOrderComponent } from "./user-order/user-order.component";
 
 @Component({
   selector: "app-root",
@@ -18,6 +19,9 @@ import { AuthService } from "./auth.service";
   styleUrls: ["./app.component.less"]
 })
 export class AppComponent {
+  @ViewChild(CreateOrderComponent) createOrderComponent: CreateOrderComponent;
+  @ViewChild(UserOrderComponent) userOrderComponent: UserOrderComponent;
+
   authorized = false;
 
   profile: any;
@@ -46,8 +50,6 @@ export class AppComponent {
   }
 
   ngAfterViewInit() {
-    this.popupService.init(this.popupContainer);
-
-    const elems = document.querySelectorAll(".modal");
+    this.popupService.init(this.createOrderComponent, this.userOrderComponent);
   }
 }

@@ -1,9 +1,7 @@
-import { Component, OnInit, Input, NgZone } from "@angular/core";
+import { Component, Input, NgZone } from "@angular/core";
 import { Order } from "../../../../be/src/models";
 import { PopupService } from "../popup.service";
-import { PlaceUserOrderComponent } from "../popups/place-user-order/place-user-order.component";
 import { VegeService } from "../vege.service";
-import { CreateOrderComponent } from "../popups/create-order/create-order.component";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -44,7 +42,9 @@ export class OrderComponent {
   }
 
   edit() {
-    this.popup.openPopup(CreateOrderComponent, { order: this.order }, () => {
+    this.popup.createOrderComponent.init({ order: this.order });
+    this.popup.createOrderComponent.open();
+    this.popup.createOrderComponent.success.subscribe(() => {
       this.zone.run(async () => {
         this.order = await this.vege.getOrder(this.order._id);
       });

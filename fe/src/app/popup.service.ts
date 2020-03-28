@@ -1,35 +1,19 @@
-import {
-  ComponentFactoryResolver,
-  Injectable,
-  ViewContainerRef,
-  Type
-} from "@angular/core";
-import { PopupComponent } from "./popups/popup/popup.component";
+import { Injectable } from "@angular/core";
+import { CreateOrderComponent } from "./popups/create-order/create-order.component";
+import { UserOrderComponent } from "./user-order/user-order.component";
 
 @Injectable({
   providedIn: "root"
 })
 export class PopupService {
-  popupContainer: ViewContainerRef;
+  createOrderComponent: CreateOrderComponent;
+  userOrderComponent: UserOrderComponent;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
-
-  init(container: ViewContainerRef) {
-    this.popupContainer = container;
-  }
-
-  openPopup(popup, params?: any, onCloseCallback?: Function) {
-    const ref = this.componentFactoryResolver.resolveComponentFactory(popup);
-    const componentRef = this.popupContainer.createComponent(ref);
-
-    (componentRef.instance as PopupComponent).init(params);
-    componentRef.changeDetectorRef.detectChanges();
-    (componentRef.instance as PopupComponent).onClose.subscribe(() => {
-      this.popupContainer.clear();
-
-      if (onCloseCallback) {
-        onCloseCallback();
-      }
-    });
+  init(
+    createOrderComponent: CreateOrderComponent,
+    userOrderComponent: UserOrderComponent
+  ) {
+    this.createOrderComponent = createOrderComponent;
+    this.userOrderComponent = userOrderComponent;
   }
 }

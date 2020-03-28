@@ -9,6 +9,8 @@ import { VegeService } from "../../vege.service";
 import { Order } from "../../../../../be/src/models";
 import { RestaurantProviderService } from "src/app/restaurant-provider.service";
 import { Timepicker, Datepicker, Modal } from "materialize-css";
+import { TranslationWidth } from "@angular/common";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-create-order",
@@ -22,6 +24,8 @@ export class CreateOrderComponent {
   @ViewChild("endtime") endtime: ElementRef;
 
   @ViewChild("modal") modalElement: ElementRef;
+
+  success = new Subject();
 
   placeName: string;
   id: string;
@@ -62,9 +66,27 @@ export class CreateOrderComponent {
       this.status = order.status;
       this.placeName = order.placeName;
       this.placeUrl = order.placeUrl;
-      this.start = order.start;
-      this.finish = order.end;
+
+      const start = new Date(order.start);
+      const end = new Date(order.end);
+
+      this.datePicker.setDate(start);
+      //https://github.com/Dogfalo/materialize/issues/6074
+      this.datePicker._finishSelection();
+
+      this.starttime.nativeElement.value = `${start.getHours()}:${start.getMinutes()}`;
+      this.endtime.nativeElement.value = `${end.getHours()}:${end.getMinutes()}`;
+
+      (this.startTimePicker as any)._updateTimeFromInput();
+      (this.startTimePicker as any).done();
+
+      (this.endTimePicker as any)._updateTimeFromInput();
+      (this.endTimePicker as any).done();
+
+      this.minimumOrderValue = order.minimumOrderValue;
       this.deliveryCost = order.deliveryCost;
+
+      setTimeout(() => M.updateTextFields());
     }
   }
 
@@ -112,8 +134,8 @@ export class CreateOrderComponent {
       autoClose: true,
       defaultTime: "now"
     });
-    this.startTimePicker._updateTimeFromInput();
-    this.startTimePicker.done();
+    (this.startTimePicker as any)._updateTimeFromInput();
+    (this.startTimePicker as any).done();
 
     this.endTimePicker = M.Timepicker.init(this.endtime.nativeElement, {
       twelveHour: false,
@@ -122,20 +144,20 @@ export class CreateOrderComponent {
       defaultTime: "now",
       fromNow: 60 * 60 * 1000
     });
-    this.endTimePicker._updateTimeFromInput();
-    this.endTimePicker.done();
+    (this.endTimePicker as any)._updateTimeFromInput();
+    (this.endTimePicker as any).done();
 
     this.datePicker = M.Datepicker.init(this.date.nativeElement, {
       container: "body",
       firstDay: 1,
       autoClose: true,
-      minDate: new Date(),
+      //minDate: new Date(),
       defaultDate: new Date(),
       setDefaultDate: true
     });
   }
 
-  private getRestaurantUrl(restaurant: Restaurant) {
+  private getRestaurantUrl(restaurant) {
     return (
       "https://www.pyszne.pl/menu/" +
       restaurant.name.toLowerCase().replace(" ", "-")
@@ -143,18 +165,12 @@ export class CreateOrderComponent {
   }
 
   async edit() {
-    await this.vege.updateOrder(this.id, {
-      deliveryCost: parseFloat(this.deliveryCost),
-      end: this.finish,
-      placeName: this.placeName,
-      placeUrl: this.placeUrl,
-      status: this.status,
-      minimumOrderValue: parseFloat(this.minimumOrderValue)
-    });
+    await this.vege.updateOrder(this.id, this.createOrderObject());
     this.close();
+    this.success.next();
   }
 
-  async create() {
+  private createOrderObject() {
     const start = new Date(this.datePicker.date);
     const end = new Date(this.datePicker.date);
 
@@ -163,28 +179,34 @@ export class CreateOrderComponent {
     end.setHours(parseInt(this.endTimePicker.time.split(":")[0]));
     end.setMinutes(parseInt(this.endTimePicker.time.split(":")[1]));
 
-    try {
-      const order = {
-        deliveryCost: parseFloat(this.deliveryCost),
-        start: start,
-        end: end,
-        placeName: this.placeName,
-        placeUrl: this.placeUrl,
-        minimumOrderValue: parseFloat(this.minimumOrderValue),
-        placeMetadata: {
-          pyszneId: this.selectedRestaurant
-            ? this.selectedRestaurant.id
-            : undefined
-        }
-      };
+    return {
+      deliveryCost: parseFloat(this.deliveryCost),
+      start: start,
+      end: end,
+      placeName: this.placeName,
+      placeUrl: this.placeUrl,
+      minimumOrderValue: parseFloat(this.minimumOrderValue),
+      placeMetadata: {
+        pyszneId: this.selectedRestaurant
+          ? this.selectedRestaurant.id
+          : undefined
+      }
+    };
+  }
 
-      console.log(order);
-      await this.vege.createOrder(order);
+  async create() {
+    try {
+      await this.vege.createOrder(this.createOrderObject());
       this.close();
+      this.success.next();
     } catch (err) {
       console.error(err);
       M.toast({ html: "Unable to create order" });
     }
+  }
+
+  open() {
+    this.modal.open();
   }
 
   close() {

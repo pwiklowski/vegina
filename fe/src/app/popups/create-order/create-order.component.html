@@ -1,6 +1,7 @@
 <div #modal id="create-order-modal" class="modal modal-fixed-footer">
   <div class="modal-content">
-    <h4 class="green-text">Create new order</h4>
+    <h4 *ngIf="!isEdit" class="green-text">Create new order</h4>
+    <h4 *ngIf="isEdit" class="green-text">Edit order</h4>
 
     <div class="divider"></div>
     <h5>Restaurant</h5>

@@ -94,6 +94,11 @@ export const OrderSchema = {
           format: "date-time",
           type: "string"
         },
+        start: {
+          description: "Enables basic storage and retrieval of dates and times.",
+          format: "date-time",
+          type: "string"
+        },
         masterUserId: {
           type: "string"
         },
