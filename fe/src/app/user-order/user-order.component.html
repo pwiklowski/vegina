@@ -17,21 +17,25 @@
         {{ userOrder.user?.name }}
       </div>
     </div>
-    <div class="menu" (click)="openMenu($event)"></div>
-  </div>
-  <div class="options" [class.opened]="isOpened" [class.owner]="owner">
-    <div class="option" *ngIf="canRemove()" (click)="removeOrder()">
-      <div class="icon remove"></div>
-      <div class="icon-label">Remove</div>
-    </div>
+    <a
+      #optionsDropdown
+      class="dropdown-trigger btn-flat"
+      href="#"
+      data-target="dropdown1"
+    >
+      <i class="material-icons">more_vert</i>
+    </a>
 
-    <div class="option duplicate" (click)="duplicate()">
-      <div class="icon duplicate"></div>
-      <div class="icon-label">Duplicate</div>
-    </div>
-    <div class="option edit" *ngIf="canEdit()" (click)="edit()">
-      <div class="icon edit"></div>
-      <div class="icon-label">Edit</div>
-    </div>
+    <ul id="dropdown1" class="dropdown-content">
+      <li *ngIf="canRemove()" (click)="removeOrder()">
+        <a href="#!"><i class="material-icons">delete_forever</i> Remove</a>
+      </li>
+      <li (click)="duplicate()">
+        <a href="#!"><i class="material-icons">content_copy</i>Duplicate</a>
+      </li>
+      <li *ngIf="canEdit()" (click)="edit()">
+        <a href="#!"><i class="material-icons">edit</i>Edit</a>
+      </li>
+    </ul>
   </div>
 </div>

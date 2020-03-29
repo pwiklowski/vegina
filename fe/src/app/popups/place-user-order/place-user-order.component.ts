@@ -39,6 +39,8 @@ export class PlaceUserOrderComponent {
     this.item = params.item;
     this.price = params.price;
     this.comment = params.comment;
+
+    setTimeout(() => M.updateTextFields());
   }
 
   async addOrder() {
@@ -49,6 +51,7 @@ export class PlaceUserOrderComponent {
     };
 
     await this.vege.addUserOrder(this.orderId, userOrder);
+    this.close();
     this.success.next();
   }
 

@@ -4,7 +4,9 @@ import {
   Input,
   Output,
   EventEmitter,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef
 } from "@angular/core";
 import { UserOrder } from "../../../../be/src/models";
 import { VegeService } from "../vege.service";
@@ -18,6 +20,8 @@ import { PlaceUserOrderComponent } from "../popups/place-user-order/place-user-o
   styleUrls: ["./user-order.component.less"]
 })
 export class UserOrderComponent {
+  @ViewChild("optionsDropdown") optionsElement: ElementRef;
+
   isOpened = false;
   owner = false;
   @Input() userOrder: UserOrder;
@@ -28,11 +32,21 @@ export class UserOrderComponent {
   constructor(
     private vege: VegeService,
     private auth: AuthService,
+
     private popup: PopupService
   ) {}
 
   ngOnInit() {
     this.owner = this.userOrder.userId === this.auth.getProfile().getId();
+  }
+
+  ngAfterViewInit() {
+    M.Dropdown.init(this.optionsElement.nativeElement, {
+      container: "body",
+      constrainWidth: false
+    });
+    //var elems = document.querySelectorAll(".dropdown-trigger");
+    //var instances = M.Dropdown.init(elems, {});
   }
 
   async removeOrder() {
@@ -49,34 +63,30 @@ export class UserOrderComponent {
   }
 
   edit() {
-    this.popup.openPopup(
-      PlaceUserOrderComponent,
-      {
-        orderId: this.orderId,
-        userOrderId: this.userOrder._id,
-        item: this.userOrder.item,
-        comment: this.userOrder.comment,
-        price: this.userOrder.price
-      },
-      async () => {
-        this.refresh.emit();
-      }
-    );
+    this.popup.placeUserOrderComponent.init({
+      orderId: this.orderId,
+      userOrderId: this.userOrder._id,
+      item: this.userOrder.item,
+      comment: this.userOrder.comment,
+      price: this.userOrder.price
+    });
+    this.popup.placeUserOrderComponent.open();
+    this.popup.placeUserOrderComponent.success.subscribe(() => {
+      this.refresh.emit();
+    });
   }
 
   duplicate() {
-    this.popup.openPopup(
-      PlaceUserOrderComponent,
-      {
-        orderId: this.orderId,
-        item: this.userOrder.item,
-        comment: this.userOrder.comment,
-        price: this.userOrder.price
-      },
-      async () => {
-        this.refresh.emit();
-      }
-    );
+    this.popup.placeUserOrderComponent.init({
+      orderId: this.orderId,
+      item: this.userOrder.item,
+      comment: this.userOrder.comment,
+      price: this.userOrder.price
+    });
+    this.popup.placeUserOrderComponent.open();
+    this.popup.placeUserOrderComponent.success.subscribe(() => {
+      this.refresh.emit();
+    });
   }
 
   openMenu(event) {
