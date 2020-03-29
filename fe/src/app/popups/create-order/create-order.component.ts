@@ -20,7 +20,6 @@ import { Subject } from "rxjs";
 export class CreateOrderComponent {
   @ViewChild("placeElement") placeElement: ElementRef;
   @ViewChild("datepicker") date: ElementRef;
-  @ViewChild("starttime") starttime: ElementRef;
   @ViewChild("endtime") endtime: ElementRef;
 
   @ViewChild("modal") modalElement: ElementRef;
@@ -42,7 +41,6 @@ export class CreateOrderComponent {
 
   selectedRestaurant: any;
 
-  startTimePicker: Timepicker;
   endTimePicker: Timepicker;
   datePicker: Datepicker;
 
@@ -72,13 +70,9 @@ export class CreateOrderComponent {
 
       this.datePicker.setDate(start);
       //https://github.com/Dogfalo/materialize/issues/6074
-      this.datePicker._finishSelection();
+      (this.datePicker as any)._finishSelection();
 
-      this.starttime.nativeElement.value = `${start.getHours()}:${start.getMinutes()}`;
       this.endtime.nativeElement.value = `${end.getHours()}:${end.getMinutes()}`;
-
-      (this.startTimePicker as any)._updateTimeFromInput();
-      (this.startTimePicker as any).done();
 
       (this.endTimePicker as any)._updateTimeFromInput();
       (this.endTimePicker as any).done();
@@ -128,15 +122,6 @@ export class CreateOrderComponent {
   }
 
   private initTimePickers() {
-    this.startTimePicker = M.Timepicker.init(this.starttime.nativeElement, {
-      twelveHour: false,
-      container: "body",
-      autoClose: true,
-      defaultTime: "now"
-    });
-    (this.startTimePicker as any)._updateTimeFromInput();
-    (this.startTimePicker as any).done();
-
     this.endTimePicker = M.Timepicker.init(this.endtime.nativeElement, {
       twelveHour: false,
       container: "body",
@@ -171,17 +156,13 @@ export class CreateOrderComponent {
   }
 
   private createOrderObject() {
-    const start = new Date(this.datePicker.date);
     const end = new Date(this.datePicker.date);
 
-    start.setHours(parseInt(this.startTimePicker.time.split(":")[0]));
-    start.setMinutes(parseInt(this.startTimePicker.time.split(":")[0]));
     end.setHours(parseInt(this.endTimePicker.time.split(":")[0]));
     end.setMinutes(parseInt(this.endTimePicker.time.split(":")[1]));
 
     return {
       deliveryCost: parseFloat(this.deliveryCost),
-      start: start,
       end: end,
       placeName: this.placeName,
       placeUrl: this.placeUrl,
