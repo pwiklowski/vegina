@@ -1,13 +1,8 @@
-import {
-  Component,
-  NgZone,
-  ChangeDetectorRef,
-  ViewChild,
-  ElementRef
-} from "@angular/core";
+import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from "@angular/core";
 import { VegeService } from "../../vege.service";
 import { Modal } from "materialize-css";
 import { Subject } from "rxjs";
+import { RestaurantProviderService } from "src/app/restaurant-provider.service";
 
 @Component({
   selector: "app-place-user-order",
@@ -16,31 +11,81 @@ import { Subject } from "rxjs";
 })
 export class PlaceUserOrderComponent {
   @ViewChild("placeUserOrder") modalElement: ElementRef;
+  @ViewChild("itemUserOrder") itemElement: ElementRef;
   modal: Modal;
 
   success = new Subject();
 
   orderId: string;
   userOrderId: string;
+  restaurantId: string;
 
   public item: string;
   public price: string;
   public comment: string;
 
-  constructor(private vege: VegeService, private cd: ChangeDetectorRef) {}
+  items: Array<any>;
+
+  selectedItem: any;
+
+  constructor(private vege: VegeService, private restaurantProvider: RestaurantProviderService) {}
 
   async ngAfterViewInit() {
     this.modal = M.Modal.init(this.modalElement.nativeElement, {});
   }
 
-  init(params: any) {
+  async init(params: any) {
+    console.log(params);
     this.orderId = params.orderId;
     this.userOrderId = params.userOrderId;
     this.item = params.item;
     this.price = params.price;
     this.comment = params.comment;
+    this.restaurantId = params.restaurantId;
+
+    if (this.restaurantId) {
+      const restaurant = await this.restaurantProvider.getRestaurant(this.restaurantId);
+      this.items = restaurant.restaurant.menu[0].categories.categories
+        .map(category => {
+          return category.products.products.map(product => {
+            return {
+              id: product.id,
+              name: product.name,
+              price: product.deliveryPrice
+            };
+          });
+        })
+        .reduce((array, items) => {
+          return [...array, ...items];
+        });
+
+      this.initAutocompleteInput();
+    }
 
     setTimeout(() => M.updateTextFields());
+  }
+
+  initAutocompleteInput() {
+    const autocomplete = this.items.reduce((map, item) => {
+      return { ...map, [item.name]: null };
+    }, []);
+
+    M.Autocomplete.init(this.itemElement.nativeElement, {
+      data: autocomplete,
+      limit: 5,
+      onAutocomplete: this.handleAutocomplete.bind(this)
+    });
+  }
+
+  private handleAutocomplete(result: string) {
+    this.selectedItem = this.items.find(item => item.name === result);
+
+    if (this.selectedItem) {
+      this.item = this.selectedItem.name;
+      this.price = (this.selectedItem.price / 100).toFixed(2);
+
+      setTimeout(() => M.updateTextFields());
+    }
   }
 
   async addOrder() {

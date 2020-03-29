@@ -10,7 +10,7 @@ export interface Order {
   initiatorUserId: string;
   userOrders: UserOrder[];
   status: string;
-  placeMetadata?: Object;
+  placeMetadata?: any;
   minimumOrderValue: number;
 }
 

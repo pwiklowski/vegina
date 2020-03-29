@@ -29,7 +29,11 @@ export class OrderComponent {
   }
 
   openPopup() {
-    this.popup.placeUserOrderComponent.init({ orderId: this.order._id });
+    console.log(this.order);
+    this.popup.placeUserOrderComponent.init({
+      orderId: this.order._id,
+      restaurantId: this.order.placeMetadata.pyszneId
+    });
     this.popup.placeUserOrderComponent.open();
     this.popup.placeUserOrderComponent.success.subscribe(() => {
       this.zone.run(async () => {

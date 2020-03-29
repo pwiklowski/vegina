@@ -8,7 +8,12 @@
     <h4 *ngIf="isEdit()" class="green-text">Edit order</h4>
 
     <div class="input-field col s4">
-      <input #itemElement type="text" class="autocomplete" [(ngModel)]="item" />
+      <input
+        #itemUserOrder
+        type="text"
+        class="autocomplete"
+        [(ngModel)]="item"
+      />
       <label>Enter item name</label>
     </div>
 
