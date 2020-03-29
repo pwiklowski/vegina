@@ -90,7 +90,7 @@ export class CreateOrderComponent {
     this.restaurants = await this.restaurantProvider.getRestaurants();
     const autocomplete = this.restaurants.reduce((map, restaurant) => {
       return { ...map, [restaurant.name]: restaurant.logoUrl };
-    });
+    }, []);
 
     M.Autocomplete.init(this.placeElement.nativeElement, {
       data: autocomplete,
