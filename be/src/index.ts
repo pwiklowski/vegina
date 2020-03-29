@@ -162,8 +162,19 @@ const createUserMetaData = (user: any): UserMetaData => {
     passport.authenticate("bearer", { session: false }),
     async (req: express.Request, res: express.Response) => {
       const orderId = req.params.orderId;
-      await orders.deleteOne({ _id: new mongo.ObjectID(orderId) });
-      res.sendStatus(204);
+
+      let order = (await orders.findOne({ _id: new mongo.ObjectID(orderId) })) as Order;
+      if (order) {
+        if (order._id !== req.user.sub) {
+          res.sendStatus(403);
+          return;
+        }
+
+        await orders.deleteOne({ _id: new mongo.ObjectID(orderId) });
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(400);
+      }
     }
   );
 
