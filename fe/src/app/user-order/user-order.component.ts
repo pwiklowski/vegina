@@ -1,18 +1,15 @@
 import {
   Component,
-  OnInit,
+  ElementRef,
+  EventEmitter,
   Input,
   Output,
-  EventEmitter,
-  ChangeDetectorRef,
-  ViewChild,
-  ElementRef
+  ViewChild
 } from "@angular/core";
 import { UserOrder } from "../../../../be/src/models";
-import { VegeService } from "../vege.service";
 import { AuthService } from "../auth.service";
 import { PopupService } from "../popup.service";
-import { PlaceUserOrderComponent } from "../popups/place-user-order/place-user-order.component";
+import { VegeService } from "../vege.service";
 
 @Component({
   selector: "app-user-order",
@@ -26,6 +23,7 @@ export class UserOrderComponent {
   owner = false;
   @Input() userOrder: UserOrder;
   @Input() orderId: string;
+  @Input() deliveryCost: number;
 
   @Output() refresh: EventEmitter<void> = new EventEmitter<void>();
 

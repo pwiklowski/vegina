@@ -12,7 +12,10 @@
     </div>
 
     <div class="details">
-      <div class="price">{{ userOrder.price }} zł</div>
+      <div class="price">
+        Item: {{ userOrder.price | number: "1.2-2" }} zł <br />
+        Delivery: {{ deliveryCost | number: "1.2-2" }} zł
+      </div>
       <div class="username">
         {{ userOrder.user?.name }}
       </div>

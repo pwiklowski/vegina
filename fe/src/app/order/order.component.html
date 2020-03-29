@@ -65,6 +65,7 @@
       *ngFor="let userOrder of order.userOrders"
       [userOrder]="userOrder"
       [orderId]="order._id"
+      [deliveryCost]="order.deliveryCost / order.userOrders.length"
       (refresh)="refresh()"
     ></app-user-order>
   </div>
