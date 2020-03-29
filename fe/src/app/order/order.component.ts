@@ -19,6 +19,11 @@ export class OrderComponent {
     private auth: AuthService
   ) {}
 
+  ngAfterViewInit() {
+    const elems = document.querySelectorAll(".essensials-item");
+    M.Tooltip.init(elems, { position: "top" });
+  }
+
   canEdit() {
     return this.order.masterUserId === this.auth.getProfile().getId();
   }

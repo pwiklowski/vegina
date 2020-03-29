@@ -1,38 +1,62 @@
 <div class="order box">
   <div class="options">
-    <div class="edit" *ngIf="canEdit()" (click)="edit()"></div>
+    <div class="edit" *ngIf="canEdit()" (click)="edit()">
+      <i class="material-icons">edit</i>
+    </div>
   </div>
 
-  <div class="name">{{ order.placeName }}</div>
-  <div>{{ order.placeUrl }}</div>
+  <div class="name">
+    <i class="material-icons">restaurant</i>
+
+    {{ order.placeName }}
+  </div>
+  <div>
+    <i class="material-icons">link</i>
+
+    {{ order.placeUrl }}
+  </div>
 
   <div class="essensials">
-    <div class="essensials-item">
-      start: <br />
-      {{ order.start | date: "shortTime" }}
+    <div
+      class="essensials-item"
+      (click)="openPopup()"
+      data-tooltip="Click to add new order"
+    >
+      <i class="material-icons">add_circle_outline</i>
+      <div class="label">Add order</div>
+    </div>
+    <div class="essensials-item" data-tooltip="Order start">
+      <i class="material-icons">flight_takeoff</i>
+
+      {{ order?.start | date: "shortTime" }}
     </div>
 
-    <div class="essensials-item">
-      finish: <br />
+    <div class="essensials-item" data-tooltip="Time when order will be closed">
+      <i class="material-icons">flight_land</i>
+
       {{ order.end | date: "shortTime" }}
     </div>
 
-    <div class="essensials-item">
-      status: <br />
+    <div class="essensials-item" data-tooltip="Order status">
+      <i class="material-icons">timeline</i>
+
       {{ order.status }}
     </div>
 
-    <div class="essensials-item">
-      deliveryCost:<br />
+    <div class="essensials-item" data-tooltip="Delivery cost">
+      <i class="material-icons">local_shipping</i>
+
       {{ order.deliveryCost }} zł
     </div>
+    <div class="essensials-item" data-tooltip="Minum order value">
+      <i class="material-icons">lock_outline</i>
 
-    <div class="essensials-item">
-      master:
+      {{ order.minimumOrderValue }} zł
+    </div>
+
+    <div class="essensials-item" data-tooltip="Order creator">
       <img class="icon" src="{{ order.master?.picture }}" />
-      <div class="master-name">
-        {{ order.master?.name }}
-      </div>
+      {{ order.master?.name }}
     </div>
   </div>
 
@@ -44,6 +68,4 @@
       (refresh)="refresh()"
     ></app-user-order>
   </div>
-
-  <button (click)="openPopup()">add</button>
 </div>
