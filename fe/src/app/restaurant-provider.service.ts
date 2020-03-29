@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
+import { Restaurant } from "../../../providers/pyszne/src/model";
+
 @Injectable({
   providedIn: "root"
 })
@@ -16,18 +18,16 @@ export class RestaurantProviderService {
   constructor(private http: HttpClient) {}
 
   async getRestaurant(id: string) {
+    const query = `code=${this.code}&latitude=${this.latitude}&longitude=${this.longitude}`;
     return this.http
-      .get(
-        `${this.BASE_URL}/${this.PROVIDER_NAME}/restaurant/${id}?code=${this.code}&latitude=${this.latitude}&longitude=${this.longitude}`
-      )
+      .get(`${this.BASE_URL}/${this.PROVIDER_NAME}/restaurant/${id}?${query}`)
       .toPromise();
   }
 
-  async getRestaurants() {
+  async getRestaurants(): Promise<Array<any>> {
+    const query = `code=${this.code}&latitude=${this.latitude}&longitude=${this.longitude}`;
     return this.http
-      .get(
-        `${this.BASE_URL}/${this.PROVIDER_NAME}/restaurants?code=${this.code}&latitude=${this.latitude}&longitude=${this.longitude}`
-      )
-      .toPromise();
+      .get(`${this.BASE_URL}/${this.PROVIDER_NAME}/restaurants?${query}`)
+      .toPromise() as Promise<Array<Restaurant>>;
   }
 }

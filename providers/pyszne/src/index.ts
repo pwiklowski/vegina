@@ -1,4 +1,5 @@
 import express = require("express");
+import { Restaurant } from "./model";
 
 const { Takeaway, TakeawayConfig } = require("takeaway");
 
@@ -32,24 +33,26 @@ const config = new TakeawayConfig({
           latitude,
           longitude
         );
-        const processedList = restaurants.map((restaurant: Restaurant) => {
-          const {
-            id,
-            name,
-            logoUrl,
-            deliveryCosts,
-            grade,
-            ratingCount
-          } = restaurant.data;
-          return {
-            id,
-            name,
-            logoUrl,
-            deliveryCosts,
-            grade,
-            ratingCount
-          };
-        });
+        const processedList = restaurants.map(
+          (restaurant): Restaurant => {
+            const {
+              id,
+              name,
+              logoUrl,
+              deliveryCosts,
+              grade,
+              ratingCount
+            } = restaurant.data;
+            return {
+              id,
+              name,
+              logoUrl,
+              deliveryCosts,
+              grade,
+              ratingCount
+            };
+          }
+        );
 
         res.json(processedList);
       } catch (err) {
