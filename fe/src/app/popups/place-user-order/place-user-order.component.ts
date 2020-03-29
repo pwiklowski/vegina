@@ -12,6 +12,7 @@ import { RestaurantProviderService } from "src/app/restaurant-provider.service";
 export class PlaceUserOrderComponent {
   @ViewChild("placeUserOrder") modalElement: ElementRef;
   @ViewChild("itemUserOrder") itemElement: ElementRef;
+
   modal: Modal;
 
   success = new Subject();
@@ -48,21 +49,32 @@ export class PlaceUserOrderComponent {
       this.items = restaurant.restaurant.menu[0].categories.categories
         .map(category => {
           return category.products.products.map(product => {
-            return {
-              id: product.id,
-              name: product.name,
-              price: product.deliveryPrice
-            };
+            let sizes = [];
+            if (product.sizes) {
+              sizes = product.sizes.products.map(product => this.createProduct(product));
+            }
+
+            return [...sizes, this.createProduct(product)];
           });
         })
         .reduce((array, items) => {
-          return [...array, ...items];
-        });
+          const products = items.reduce((a, i) => [...a, ...i], []);
+
+          return [...array, ...products];
+        }, []);
 
       this.initAutocompleteInput();
     }
 
     setTimeout(() => M.updateTextFields());
+  }
+
+  createProduct(rawData) {
+    return {
+      id: rawData.id,
+      name: rawData.name,
+      price: rawData.deliveryPrice
+    };
   }
 
   initAutocompleteInput() {
