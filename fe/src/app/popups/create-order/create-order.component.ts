@@ -49,8 +49,8 @@ export class CreateOrderComponent {
       text: "Started"
     },
     {
-      value: "FINISHED",
-      text: "Finished"
+      value: "CLOSED",
+      text: "Closed"
     },
     {
       value: "ORDERED",
@@ -59,6 +59,10 @@ export class CreateOrderComponent {
     {
       value: "DELIVERED",
       text: "Delivered"
+    },
+    {
+      value: "FINISHED",
+      text: "Finished"
     },
     {
       value: "CANCELED",

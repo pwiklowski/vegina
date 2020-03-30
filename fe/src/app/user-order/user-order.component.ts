@@ -1,11 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { UserOrder } from "../../../../be/src/models";
 import { AuthService } from "../auth.service";
 import { PopupService } from "../popup.service";
@@ -19,11 +12,11 @@ import { VegeService } from "../vege.service";
 export class UserOrderComponent {
   @ViewChild("optionsDropdown") optionsElement: ElementRef;
 
-  isOpened = false;
   owner = false;
   @Input() userOrder: UserOrder;
   @Input() orderId: string;
   @Input() deliveryCost: number;
+  @Input() status: string;
 
   @Output() refresh: EventEmitter<void> = new EventEmitter<void>();
 

@@ -20,12 +20,7 @@
         {{ userOrder.user?.name }}
       </div>
     </div>
-    <a
-      #optionsDropdown
-      class="dropdown-trigger btn-flat"
-      href="#"
-      data-target="dropdown1"
-    >
+    <a #optionsDropdown class="dropdown-trigger btn-flat" href="#" data-target="dropdown1" [attr.disabled]="status !== 'STARTED'">
       <i class="material-icons">more_vert</i>
     </a>
 

@@ -17,11 +17,7 @@
   </div>
 
   <div class="essensials">
-    <div
-      class="essensials-item"
-      (click)="openPopup()"
-      data-tooltip="Click to add new order"
-    >
+    <div class="essensials-item" [class.disabled]="order.status !== 'STARTED'" (click)="openPopup()" data-tooltip="Click to add new order">
       <i class="material-icons">add_circle_outline</i>
       <div class="label">Add order</div>
     </div>
@@ -66,6 +62,7 @@
       [userOrder]="userOrder"
       [orderId]="order._id"
       [deliveryCost]="order.deliveryCost / order.userOrders.length"
+      [status]="order.status"
       (refresh)="refresh()"
     ></app-user-order>
   </div>

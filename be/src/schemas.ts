@@ -77,7 +77,7 @@ export const OrderSchema = {
       type: "object"
     },
     OrderStatus: {
-      enum: ["CANCELED", "DELIVERED", "FINISHED", "ORDERED", "STARTED"],
+      enum: ["CANCELED", "DELIVERED", "FINISHED", "ORDERED", "STARTED", "CLOSED"],
       type: "string"
     },
     UpdateOrder: {
