@@ -1,10 +1,5 @@
 <div class="user-order">
-  <div
-    class="content"
-    [class.opened]="isOpened"
-    [class.owner]="owner"
-    (click)="closeMenu()"
-  >
+  <div class="content" [class.opened]="isOpened" [class.owner]="owner">
     <img class="avatar" src="{{ userOrder.user?.picture }}" />
     <div class="item">
       <div class="item-name">{{ userOrder.item }}</div>

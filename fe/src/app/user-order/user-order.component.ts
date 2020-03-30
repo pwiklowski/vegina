@@ -77,13 +77,4 @@ export class UserOrderComponent {
       this.refresh.emit();
     });
   }
-
-  openMenu(event) {
-    this.isOpened = true;
-    event.stopPropagation();
-  }
-
-  closeMenu() {
-    this.isOpened = false;
-  }
 }
