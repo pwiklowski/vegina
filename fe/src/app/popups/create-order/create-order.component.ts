@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectorRef,
-  ViewChild,
-  ElementRef,
-  ViewContainerRef
-} from "@angular/core";
+import { Component, ChangeDetectorRef, ViewChild, ElementRef, ViewContainerRef } from "@angular/core";
 import { VegeService } from "../../vege.service";
 import { Order } from "../../../../../be/src/models";
 import { RestaurantProviderService } from "src/app/restaurant-provider.service";
@@ -24,12 +18,14 @@ export class CreateOrderComponent {
 
   @ViewChild("modal") modalElement: ElementRef;
 
+  @ViewChild("orderStatusElement") orderStatusElement: ElementRef;
+
   success = new Subject();
 
   placeName: string;
   id: string;
   placeUrl: string;
-  status: string;
+  orderStatus: string;
   start: Date;
   finish: Date;
   deliveryCost: string;
@@ -43,8 +39,32 @@ export class CreateOrderComponent {
 
   endTimePicker: Timepicker;
   datePicker: Datepicker;
+  orderStatusSelect: any;
 
   modal: Modal;
+
+  statuses = [
+    {
+      value: "STARTED",
+      text: "Started"
+    },
+    {
+      value: "FINISHED",
+      text: "Finished"
+    },
+    {
+      value: "ORDERED",
+      text: "Ordered"
+    },
+    {
+      value: "DELIVERED",
+      text: "Delivered"
+    },
+    {
+      value: "CANCELED",
+      text: "Canceled"
+    }
+  ];
 
   constructor(
     private vege: VegeService,
@@ -61,7 +81,7 @@ export class CreateOrderComponent {
       this.isEdit = true;
 
       this.id = order._id;
-      this.status = order.status;
+      this.orderStatus = order.status;
       this.placeName = order.placeName;
       this.placeUrl = order.placeUrl;
 
@@ -80,7 +100,10 @@ export class CreateOrderComponent {
       this.minimumOrderValue = order.minimumOrderValue;
       this.deliveryCost = order.deliveryCost;
 
-      setTimeout(() => M.updateTextFields());
+      setTimeout(() => {
+        M.updateTextFields();
+        this.orderStatusSelect = M.FormSelect.init(this.orderStatusElement.nativeElement, {});
+      });
     }
   }
 
@@ -99,21 +122,17 @@ export class CreateOrderComponent {
     });
 
     this.initTimePickers();
+
+    this.orderStatusSelect = M.FormSelect.init(this.orderStatusElement.nativeElement, {});
   }
 
   private handleAutocomplete(result: string) {
-    this.selectedRestaurant = this.restaurants.find(
-      restaurant => restaurant.name === result
-    );
+    this.selectedRestaurant = this.restaurants.find(restaurant => restaurant.name === result);
 
     if (this.selectedRestaurant) {
       this.placeName = this.selectedRestaurant.name;
-      this.deliveryCost = (
-        this.selectedRestaurant.deliveryCosts.costs.costs / 100
-      ).toFixed(2);
-      this.minimumOrderValue = (
-        this.selectedRestaurant.deliveryCosts.minimumAmount / 100
-      ).toFixed(2);
+      this.deliveryCost = (this.selectedRestaurant.deliveryCosts.costs.costs / 100).toFixed(2);
+      this.minimumOrderValue = (this.selectedRestaurant.deliveryCosts.minimumAmount / 100).toFixed(2);
 
       this.placeUrl = this.getRestaurantUrl(this.selectedRestaurant);
 
@@ -143,10 +162,7 @@ export class CreateOrderComponent {
   }
 
   private getRestaurantUrl(restaurant) {
-    return (
-      "https://www.pyszne.pl/menu/" +
-      restaurant.name.toLowerCase().replace(" ", "-")
-    );
+    return "https://www.pyszne.pl/menu/" + restaurant.name.toLowerCase().replace(" ", "-");
   }
 
   async edit() {
@@ -166,11 +182,10 @@ export class CreateOrderComponent {
       end: end,
       placeName: this.placeName,
       placeUrl: this.placeUrl,
+      status: this.orderStatusElement.nativeElement.value,
       minimumOrderValue: parseFloat(this.minimumOrderValue),
       placeMetadata: {
-        pyszneId: this.selectedRestaurant
-          ? this.selectedRestaurant.id
-          : undefined
+        pyszneId: this.selectedRestaurant ? this.selectedRestaurant.id : undefined
       }
     };
   }

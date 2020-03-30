@@ -3,15 +3,19 @@
     <h4 *ngIf="!isEdit" class="green-text">Create new order</h4>
     <h4 *ngIf="isEdit" class="green-text">Edit order</h4>
 
+    <div class="input-field col s12">
+      <select #orderStatusElement>
+        <option *ngFor="let status of statuses" value="{{ status.value }}" [selected]="status.value === orderStatus">
+          {{ status.text }}
+        </option>
+      </select>
+      <label>Order status</label>
+    </div>
+
     <div class="divider"></div>
     <h5>Restaurant</h5>
     <div class="input-field col s12">
-      <input
-        #placeElement
-        type="text"
-        class="autocomplete"
-        [(ngModel)]="placeName"
-      />
+      <input #placeElement type="text" class="autocomplete" [(ngModel)]="placeName" />
       <label>Enter restaurant name</label>
     </div>
 
@@ -53,22 +57,12 @@
     <a href="#!" class="modal-close waves-effect waves-green btn-flat">
       Cancel
     </a>
-    <a
-      href="#!"
-      class="waves-effect waves-green btn"
-      *ngIf="!isEdit"
-      (click)="create()"
-    >
+    <a href="#!" class="waves-effect waves-green btn" *ngIf="!isEdit" (click)="create()">
       Create
     </a>
 
-    <a
-      href="#!"
-      class="waves-effect waves-green btn"
-      *ngIf="isEdit"
-      (click)="edit()"
-    >
-      Edit
+    <a href="#!" class="waves-effect waves-green btn" *ngIf="isEdit" (click)="edit()">
+      Save
     </a>
   </div>
 </div>
