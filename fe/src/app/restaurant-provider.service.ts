@@ -4,10 +4,10 @@ import { HttpClient } from "@angular/common/http";
 import { Restaurant } from "../../../providers/pyszne/src/model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class RestaurantProviderService {
-  BASE_URL = "http://localhost:4200/api";
+  BASE_URL = "/api";
 
   PROVIDER_NAME = "pyszne";
 
@@ -19,15 +19,11 @@ export class RestaurantProviderService {
 
   async getRestaurant(id: string) {
     const query = `code=${this.code}&latitude=${this.latitude}&longitude=${this.longitude}`;
-    return this.http
-      .get(`${this.BASE_URL}/${this.PROVIDER_NAME}/restaurant/${id}?${query}`)
-      .toPromise();
+    return this.http.get(`${this.BASE_URL}/${this.PROVIDER_NAME}/restaurant/${id}?${query}`).toPromise() as any;
   }
 
   async getRestaurants(): Promise<Array<any>> {
     const query = `code=${this.code}&latitude=${this.latitude}&longitude=${this.longitude}`;
-    return this.http
-      .get(`${this.BASE_URL}/${this.PROVIDER_NAME}/restaurants?${query}`)
-      .toPromise() as Promise<Array<Restaurant>>;
+    return this.http.get(`${this.BASE_URL}/${this.PROVIDER_NAME}/restaurants?${query}`).toPromise() as Promise<Array<Restaurant>>;
   }
 }
