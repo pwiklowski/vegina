@@ -9,7 +9,7 @@ import { Subject } from "rxjs";
 @Component({
   selector: "app-create-order",
   templateUrl: "./create-order.component.html",
-  styleUrls: ["./create-order.component.less"]
+  styleUrls: ["./create-order.component.less"],
 })
 export class CreateOrderComponent {
   @ViewChild("placeElement") placeElement: ElementRef;
@@ -46,28 +46,28 @@ export class CreateOrderComponent {
   statuses = [
     {
       value: "STARTED",
-      text: "Started"
+      text: "Started",
     },
     {
       value: "CLOSED",
-      text: "Closed"
+      text: "Closed",
     },
     {
       value: "ORDERED",
-      text: "Ordered"
+      text: "Ordered",
     },
     {
       value: "DELIVERED",
-      text: "Delivered"
+      text: "Delivered",
     },
     {
       value: "FINISHED",
-      text: "Finished"
+      text: "Finished",
     },
     {
       value: "CANCELED",
-      text: "Canceled"
-    }
+      text: "Canceled",
+    },
   ];
 
   constructor(
@@ -101,8 +101,8 @@ export class CreateOrderComponent {
       (this.endTimePicker as any)._updateTimeFromInput();
       (this.endTimePicker as any).done();
 
-      this.minimumOrderValue = order.minimumOrderValue;
-      this.deliveryCost = order.deliveryCost;
+      this.minimumOrderValue = order.minimumOrderValue.toString();
+      this.deliveryCost = order.deliveryCost.toString();
 
       setTimeout(() => {
         M.updateTextFields();
@@ -122,7 +122,7 @@ export class CreateOrderComponent {
     M.Autocomplete.init(this.placeElement.nativeElement, {
       data: autocomplete,
       limit: 5,
-      onAutocomplete: this.handleAutocomplete.bind(this)
+      onAutocomplete: this.handleAutocomplete.bind(this),
     });
 
     this.initTimePickers();
@@ -131,7 +131,7 @@ export class CreateOrderComponent {
   }
 
   private handleAutocomplete(result: string) {
-    this.selectedRestaurant = this.restaurants.find(restaurant => restaurant.name === result);
+    this.selectedRestaurant = this.restaurants.find((restaurant) => restaurant.name === result);
 
     if (this.selectedRestaurant) {
       this.placeName = this.selectedRestaurant.name;
@@ -150,18 +150,18 @@ export class CreateOrderComponent {
       container: "body",
       autoClose: true,
       defaultTime: "now",
-      fromNow: 60 * 60 * 1000
+      fromNow: 60 * 60 * 1000,
     });
     (this.endTimePicker as any)._updateTimeFromInput();
     (this.endTimePicker as any).done();
 
     this.datePicker = M.Datepicker.init(this.date.nativeElement, {
-      container: "body",
+      container: "body" as any,
       firstDay: 1,
       autoClose: true,
       //minDate: new Date(),
       defaultDate: new Date(),
-      setDefaultDate: true
+      setDefaultDate: true,
     });
   }
 
@@ -189,8 +189,8 @@ export class CreateOrderComponent {
       status: this.orderStatusElement.nativeElement.value,
       minimumOrderValue: parseFloat(this.minimumOrderValue),
       placeMetadata: {
-        pyszneId: this.selectedRestaurant ? this.selectedRestaurant.id : undefined
-      }
+        pyszneId: this.selectedRestaurant ? this.selectedRestaurant.id : undefined,
+      },
     };
   }
 

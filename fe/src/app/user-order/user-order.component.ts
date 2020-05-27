@@ -7,7 +7,7 @@ import { VegeService } from "../vege.service";
 @Component({
   selector: "app-user-order",
   templateUrl: "./user-order.component.html",
-  styleUrls: ["./user-order.component.less"]
+  styleUrls: ["./user-order.component.less"],
 })
 export class UserOrderComponent {
   @ViewChild("optionsDropdown") optionsElement: ElementRef;
@@ -20,12 +20,7 @@ export class UserOrderComponent {
 
   @Output() refresh: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(
-    private vege: VegeService,
-    private auth: AuthService,
-
-    private popup: PopupService
-  ) {}
+  constructor(private vege: VegeService, private auth: AuthService, private popup: PopupService) {}
 
   ngOnInit() {
     this.owner = this.userOrder.userId === this.auth.getProfile().getId();
@@ -33,8 +28,8 @@ export class UserOrderComponent {
 
   ngAfterViewInit() {
     M.Dropdown.init(this.optionsElement.nativeElement, {
-      container: "body",
-      constrainWidth: false
+      container: "body" as any,
+      constrainWidth: false,
     });
   }
 
@@ -57,7 +52,7 @@ export class UserOrderComponent {
       userOrderId: this.userOrder._id,
       item: this.userOrder.item,
       comment: this.userOrder.comment,
-      price: this.userOrder.price
+      price: this.userOrder.price,
     });
     this.popup.placeUserOrderComponent.open();
     this.popup.placeUserOrderComponent.success.subscribe(() => {
@@ -70,7 +65,7 @@ export class UserOrderComponent {
       orderId: this.orderId,
       item: this.userOrder.item,
       comment: this.userOrder.comment,
-      price: this.userOrder.price
+      price: this.userOrder.price,
     });
     this.popup.placeUserOrderComponent.open();
     this.popup.placeUserOrderComponent.success.subscribe(() => {
