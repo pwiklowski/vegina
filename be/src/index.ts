@@ -17,17 +17,23 @@ const app: express.Application = express();
 
 const validator = new Validator({ allErrors: true });
 
+declare module "express" {
+  export interface Request {
+    user: any;
+  }
+}
+
 app.use(passport.initialize());
 app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
     limit: "100mb",
-    parameterLimit: 1000000
+    parameterLimit: 1000000,
   })
 );
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -38,14 +44,14 @@ const createUserMetaData = (user: any): UserMetaData => {
     email: user.email,
     sub: user.sub,
     name: user.name,
-    picture: user.picture
+    picture: user.picture,
   };
 };
 
 (async () => {
   const client: mongo.MongoClient = await mongo.connect("mongodb://127.0.0.1:27017", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   });
   const db = client.db("wege");
   const orders = db.collection("orders");
@@ -86,7 +92,7 @@ const createUserMetaData = (user: any): UserMetaData => {
         masterUserId: userId,
         initiatorUserId: userId,
         master: createUserMetaData(req.user),
-        userOrders: []
+        userOrders: [],
       };
 
       const response = await orders.insertOne(order);
@@ -249,7 +255,7 @@ const createUserMetaData = (user: any): UserMetaData => {
     }
   );
 
-  app.use(function(err: any, req: any, res: any, next: any) {
+  app.use(function (err: any, req: any, res: any, next: any) {
     if (err instanceof ValidationError) {
       res.statusCode = 422;
       res.json(err);
