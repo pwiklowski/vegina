@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "ts-node-dev src/index.ts",
+    "build": "tsc",
     "generate-schemas": "typescript-json-schema src/models.ts \"*\" -e all --noExtraProps"
   },
   "repository": {

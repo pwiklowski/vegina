@@ -12,7 +12,7 @@
     "paths": {
       "*": ["node_modules/*"]
     },
-    "types": ["cypress"]
+    "types": []
   },
   "include": ["src/**/*"]
 }

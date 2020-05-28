@@ -34,7 +34,7 @@ const config = new TakeawayConfig({
           longitude
         );
         const processedList = restaurants.map(
-          (restaurant): Restaurant => {
+          (restaurant: any): Restaurant => {
             const {
               id,
               name,
