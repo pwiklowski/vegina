@@ -186,7 +186,6 @@ export class CreateOrderComponent {
       end: end,
       placeName: this.placeName,
       placeUrl: this.placeUrl,
-      status: this.orderStatusElement.nativeElement.value,
       minimumOrderValue: parseFloat(this.minimumOrderValue),
       placeMetadata: {
         pyszneId: this.selectedRestaurant ? this.selectedRestaurant.id : undefined,
