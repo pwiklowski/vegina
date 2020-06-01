@@ -49,7 +49,7 @@ const createUserMetaData = (user: any): UserMetaData => {
 };
 
 (async () => {
-  const client: mongo.MongoClient = await mongo.connect("mongodb://127.0.0.1:27017", {
+  const client: mongo.MongoClient = await mongo.connect("mongodb://mongo:27017", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
