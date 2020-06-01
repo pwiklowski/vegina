@@ -56,6 +56,20 @@
     </div>
   </div>
 
+  <div class="divider"></div>
+
+  <div *ngIf="order.status === 'ORDERED'">
+    Delivery detaiils<br />
+    ETA: <br />
+    Tracking link: <br />
+  </div>
+  <div *ngIf="order.status === 'DELIVERED'">
+    Consumption detaiils
+  </div>
+  <div *ngIf="order.status === 'FINISHED'">
+    Payment detaiils
+  </div>
+
   <div class="user-orders">
     <app-user-order
       *ngFor="let userOrder of order.userOrders"
