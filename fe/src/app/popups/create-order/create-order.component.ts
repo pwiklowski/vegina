@@ -223,7 +223,7 @@ export class CreateOrderComponent {
 
   async create() {
     try {
-      await this.vege.createOrder(this.createOrderObject());
+      await this.vege.createOrder(this.createOrderObject(undefined));
       this.close();
       this.success.next();
     } catch (err) {
