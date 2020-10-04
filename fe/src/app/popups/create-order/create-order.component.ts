@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, ViewChild, ElementRef, ViewContainerRef } from "@angular/core";
 import { VegeService } from "../../vege.service";
-import { Order } from "../../../../../be/src/models";
+import { Order, OrderStatus } from "../../../../../be/src/models";
 import { RestaurantProviderService } from "src/app/restaurant-provider.service";
 import { Timepicker, Datepicker, Modal } from "materialize-css";
 import { TranslationWidth } from "@angular/common";
@@ -170,12 +170,13 @@ export class CreateOrderComponent {
   }
 
   async edit() {
-    await this.vege.updateOrder(this.id, this.createOrderObject());
+    const status = this.statuses[this.orderStatusSelect.el.selectedIndex].value;
+    await this.vege.updateOrder(this.id, this.createOrderObject(status));
     this.close();
     this.success.next();
   }
 
-  private createOrderObject() {
+  private createOrderObject(status: string = OrderStatus.STARTED) {
     const end = new Date(this.datePicker.date);
 
     end.setHours(parseInt(this.endTimePicker.time.split(":")[0]));
@@ -186,6 +187,7 @@ export class CreateOrderComponent {
       end: end,
       placeName: this.placeName,
       placeUrl: this.placeUrl,
+      status: status,
       minimumOrderValue: parseFloat(this.minimumOrderValue),
       placeMetadata: {
         pyszneId: this.selectedRestaurant ? this.selectedRestaurant.id : undefined,
