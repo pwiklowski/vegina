@@ -78,7 +78,7 @@ export class CreateOrderComponent {
     private vc: ViewContainerRef
   ) {}
 
-  init(params: any) {
+  async init(params: any) {
     if (params) {
       const order: Order = params.order;
 
@@ -103,6 +103,32 @@ export class CreateOrderComponent {
 
       this.minimumOrderValue = order.minimumOrderValue.toString();
       this.deliveryCost = order.deliveryCost.toString();
+
+      setTimeout(() => {
+        M.updateTextFields();
+        this.orderStatusSelect = M.FormSelect.init(this.orderStatusElement.nativeElement, {});
+      });
+    } else {
+      this.isEdit = false;
+
+      this.id = undefined;
+      this.orderStatus = OrderStatus.STARTED;
+      this.placeName = undefined;
+      this.placeUrl = undefined;
+
+      this.datePicker.setDate(new Date());
+      // //https://github.com/Dogfalo/materialize/issues/6074
+      (this.datePicker as any)._finishSelection();
+
+      const end = new Date();
+      end.setHours(end.getHours() + 1);
+      this.endtime.nativeElement.value = `${end.getHours()}:${end.getMinutes()}`;
+
+      (this.endTimePicker as any)._updateTimeFromInput();
+      (this.endTimePicker as any).done();
+
+      this.minimumOrderValue = undefined;
+      this.deliveryCost = undefined;
 
       setTimeout(() => {
         M.updateTextFields();
@@ -176,7 +202,7 @@ export class CreateOrderComponent {
     this.success.next();
   }
 
-  private createOrderObject(status: string = OrderStatus.STARTED) {
+  private createOrderObject(status: string) {
     const end = new Date(this.datePicker.date);
 
     end.setHours(parseInt(this.endTimePicker.time.split(":")[0]));
@@ -187,7 +213,7 @@ export class CreateOrderComponent {
       end: end,
       placeName: this.placeName,
       placeUrl: this.placeUrl,
-      status: status,
+      status,
       minimumOrderValue: parseFloat(this.minimumOrderValue),
       placeMetadata: {
         pyszneId: this.selectedRestaurant ? this.selectedRestaurant.id : undefined,

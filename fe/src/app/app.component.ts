@@ -1,11 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  ViewContainerRef,
-  ElementRef,
-  ChangeDetectorRef,
-  NgZone
-} from "@angular/core";
+import { Component, ViewChild, ViewContainerRef, ElementRef, ChangeDetectorRef, NgZone } from "@angular/core";
 import { VegeService } from "./vege.service";
 import { Order } from "../../../be/src/models";
 import { PopupService } from "./popup.service";
@@ -17,7 +10,7 @@ import { PlaceUserOrderComponent } from "./popups/place-user-order/place-user-or
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.less"]
+  styleUrls: ["./app.component.less"],
 })
 export class AppComponent {
   @ViewChild(CreateOrderComponent)
@@ -53,10 +46,17 @@ export class AppComponent {
     });
   }
 
+  createNewOrder() {
+    this.popupService.createOrderComponent.init(null);
+    this.popupService.createOrderComponent.open();
+    this.popupService.createOrderComponent.success.subscribe(() => {
+      this.zone.run(async () => {
+        this.orders = await this.service.getOrders();
+      });
+    });
+  }
+
   ngAfterViewInit() {
-    this.popupService.init(
-      this.createOrderComponent,
-      this.placeUserOrderComponent
-    );
+    this.popupService.init(this.createOrderComponent, this.placeUserOrderComponent);
   }
 }

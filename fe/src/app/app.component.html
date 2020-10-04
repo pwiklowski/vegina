@@ -8,10 +8,7 @@
     <img class="nav-avatar" src="{{ profile?.getImageUrl() }}" />
     <div class="nav-username">{{ profile?.getName() }}</div>
   </div>
-  <a
-    class="btn-floating btn-large waves-effect waves-light green modal-trigger add-order-button"
-    data-target="create-order-modal"
-  >
+  <a class="btn-floating btn-large waves-effect waves-light green add-order-button" (click)="createNewOrder()">
     <i class="material-icons">add_shopping_cart</i>
   </a>
 

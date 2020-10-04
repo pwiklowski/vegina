@@ -1,19 +1,10 @@
-<div
-  #placeUserOrder
-  id="create-user-order-modal"
-  class="modal modal-fixed-footer"
->
+<div #placeUserOrder id="create-user-order-modal" class="modal modal-fixed-footer">
   <div class="modal-content">
     <h4 *ngIf="!isEdit()" class="green-text">Create new order</h4>
     <h4 *ngIf="isEdit()" class="green-text">Edit order</h4>
 
     <div class="input-field col s4">
-      <input
-        #itemUserOrder
-        type="text"
-        class="autocomplete"
-        [(ngModel)]="item"
-      />
+      <input #itemUserOrder type="text" class="autocomplete" [(ngModel)]="item" />
       <label>Enter item name</label>
     </div>
 
@@ -31,21 +22,11 @@
     <a href="#!" class="modal-close waves-effect waves-green btn-flat">
       Cancel
     </a>
-    <a
-      href="#!"
-      class="waves-effect waves-green btn"
-      *ngIf="!isEdit()"
-      (click)="addOrder()"
-    >
+    <a href="#!" class="waves-effect waves-green btn" *ngIf="!isEdit()" (click)="addOrder()">
       Create
     </a>
 
-    <a
-      href="#!"
-      class="waves-effect waves-green btn"
-      *ngIf="isEdit()"
-      (click)="editOrder()"
-    >
+    <a href="#!" class="waves-effect waves-green btn" *ngIf="isEdit()" (click)="editOrder()">
       Edit
     </a>
   </div>

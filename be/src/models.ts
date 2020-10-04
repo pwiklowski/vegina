@@ -52,7 +52,7 @@ export enum OrderStatus {
   ORDERED = "ORDERED",
   DELIVERED = "DELIVERED",
   CANCELED = "CANCELED",
-  CLOSED = "CLOSED"
+  CLOSED = "CLOSED",
 }
 
 export interface UserMetaData {
