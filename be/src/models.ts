@@ -44,6 +44,8 @@ export interface UserOrder {
   price: number;
   comment?: string;
   settled?: boolean;
+  categoryId: string;
+  itemId: string;
   options: Array<any>;
 }
 

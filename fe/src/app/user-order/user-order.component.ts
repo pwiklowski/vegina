@@ -57,6 +57,8 @@ export class UserOrderComponent {
       item: this.userOrder.item,
       comment: this.userOrder.comment,
       price: this.userOrder.price,
+      categoryId: this.userOrder.categoryId,
+      itemId: this.userOrder.itemId,
     });
     this.popup.placeUserOrderComponent.open();
     this.popup.placeUserOrderComponent.success.subscribe(() => {
@@ -70,6 +72,8 @@ export class UserOrderComponent {
       item: this.userOrder.item,
       comment: this.userOrder.comment,
       price: this.userOrder.price,
+      categoryId: this.userOrder.categoryId,
+      itemId: this.userOrder.itemId,
     });
     this.popup.placeUserOrderComponent.open();
     this.popup.placeUserOrderComponent.success.subscribe(() => {

@@ -26,6 +26,8 @@ export class PlaceUserOrderComponent {
   public price: string;
   public comment: string;
   public options: any;
+  public categoryId: string;
+  public itemId: string;
 
   items: Array<any>;
 
@@ -45,6 +47,8 @@ export class PlaceUserOrderComponent {
     this.price = params.price;
     this.comment = params.comment;
     this.restaurantId = params.restaurantId;
+    this.categoryId = params.categoryId;
+    this.itemId = params.itemId;
 
     if (this.restaurantId) {
       const restaurant = await this.restaurantProvider.getRestaurant(this.restaurantId);
@@ -53,10 +57,10 @@ export class PlaceUserOrderComponent {
           return category.products.products.map((product) => {
             let sizes = [];
             if (product.sizes) {
-              sizes = product.sizes.products.map((product) => this.createProduct(product));
+              sizes = product.sizes.products.map((product) => this.createProduct(category.id, product));
             }
 
-            return [...sizes, this.createProduct(product)];
+            return [...sizes, this.createProduct(category.id, product)];
           });
         })
         .reduce((array, items) => {
@@ -71,13 +75,14 @@ export class PlaceUserOrderComponent {
     setTimeout(() => M.updateTextFields());
   }
 
-  createProduct(rawData) {
+  createProduct(categoryId, rawData) {
     return {
-      id: rawData.id,
+      itemId: rawData.id,
       name: rawData.name,
       price: rawData.deliveryPrice,
       description: rawData.description,
       options: rawData.options,
+      categoryId: categoryId,
     };
   }
 
@@ -100,8 +105,10 @@ export class PlaceUserOrderComponent {
       this.item = this.selectedItem.name;
       this.price = (this.selectedItem.price / 100).toFixed(2);
       this.options = this.selectedItem.options.options;
+      this.categoryId = this.selectedItem.categoryId;
+      this.itemId = this.selectedItem.itemId;
 
-      this.options.map((option, index) => {
+      this.options?.map((option, index) => {
         console.log(option);
         if (option.type == 1) {
           const firstOption = option.choices.choices[0];
@@ -128,6 +135,8 @@ export class PlaceUserOrderComponent {
     const userOrder = {
       item: this.item,
       price: parseFloat(this.price),
+      categoryId: this.categoryId,
+      itemId: this.itemId,
       comment: this.comment,
       options: this.getOptions(),
     };
@@ -143,6 +152,8 @@ export class PlaceUserOrderComponent {
       price: parseFloat(this.price),
       comment: this.comment,
       options: this.getOptions(),
+      categoryId: this.categoryId,
+      itemId: this.itemId,
     };
 
     await this.vege.editUserOrder(this.orderId, this.userOrderId, userOrder);
