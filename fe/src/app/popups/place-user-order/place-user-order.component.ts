@@ -81,7 +81,7 @@ export class PlaceUserOrderComponent {
       name: rawData.name,
       price: rawData.deliveryPrice,
       description: rawData.description,
-      options: rawData.options,
+      options: rawData.options?.options,
       categoryId: categoryId,
     };
   }
@@ -104,7 +104,7 @@ export class PlaceUserOrderComponent {
     if (this.selectedItem) {
       this.item = this.selectedItem.name;
       this.price = (this.selectedItem.price / 100).toFixed(2);
-      this.options = this.selectedItem.options.options;
+      this.options = this.selectedItem.options;
       this.categoryId = this.selectedItem.categoryId;
       this.itemId = this.selectedItem.itemId;
 
