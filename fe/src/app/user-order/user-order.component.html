@@ -3,6 +3,7 @@
     <img class="avatar" src="{{ userOrder.user?.picture }}" />
     <div class="item">
       <div class="item-name">{{ userOrder.item }}</div>
+      <div class="item-options">{{ getOptions() }}</div>
       <div class="item-comment">{{ userOrder.comment }}</div>
     </div>
 

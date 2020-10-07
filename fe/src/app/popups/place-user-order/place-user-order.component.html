@@ -17,17 +17,37 @@
       <label>Comment</label>
       <input type="text" [(ngModel)]="comment" />
     </div>
+
+    <form action="#">
+      <div *ngFor="let option of options; index as i">
+        {{ option.name }}:
+        <div *ngIf="option.type == 2">
+          <p *ngFor="let choice of option.choices.choices; index as j">
+            <label>
+              <input
+                type="checkbox"
+                class="filled-in"
+                (change)="optionChanged($event.target.checked, choice.name, choice.id, choice.deliveryPrice, 'choice_' + i + '_' + j)"
+              />
+              <span>{{ choice.name }} (+{{ choice.deliveryPrice }})</span>
+            </label>
+          </p>
+        </div>
+        <div *ngIf="option.type == 1">
+          <div class="input-field col s12">
+            <select (change)="optionChanged(true, $event.target.innerText, $event.target.value, 0, 'choice_' + i)">
+              <option value="{{ choice.id }}" *ngFor="let choice of option.choices.choices">
+                {{ choice.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat">
-      Cancel
-    </a>
-    <a href="#!" class="waves-effect waves-green btn" *ngIf="!isEdit()" (click)="addOrder()">
-      Create
-    </a>
-
-    <a href="#!" class="waves-effect waves-green btn" *ngIf="isEdit()" (click)="editOrder()">
-      Edit
-    </a>
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat"> Cancel </a>
+    <a href="#!" class="waves-effect waves-green btn" *ngIf="!isEdit()" (click)="addOrder()"> Create </a>
+    <a href="#!" class="waves-effect waves-green btn" *ngIf="isEdit()" (click)="editOrder()"> Edit </a>
   </div>
 </div>

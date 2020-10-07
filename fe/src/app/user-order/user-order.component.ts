@@ -38,6 +38,10 @@ export class UserOrderComponent {
     this.refresh.emit();
   }
 
+  getOptions() {
+    return this.userOrder.options?.map((option) => option.name).join(", ");
+  }
+
   canRemove() {
     return this.userOrder.userId === this.auth.getProfile().getId();
   }

@@ -44,6 +44,7 @@ export interface UserOrder {
   price: number;
   comment?: string;
   settled?: boolean;
+  options: Array<any>;
 }
 
 export enum OrderStatus {

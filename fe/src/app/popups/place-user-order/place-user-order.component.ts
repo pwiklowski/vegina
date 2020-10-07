@@ -7,7 +7,7 @@ import { RestaurantProviderService } from "src/app/restaurant-provider.service";
 @Component({
   selector: "app-place-user-order",
   templateUrl: "./place-user-order.component.html",
-  styleUrls: ["./place-user-order.component.less"]
+  styleUrls: ["./place-user-order.component.less"],
 })
 export class PlaceUserOrderComponent {
   @ViewChild("placeUserOrder") modalElement: ElementRef;
@@ -20,10 +20,12 @@ export class PlaceUserOrderComponent {
   orderId: string;
   userOrderId: string;
   restaurantId: string;
+  selectedOptions: Map<string, any> = new Map();
 
   public item: string;
   public price: string;
   public comment: string;
+  public options: any;
 
   items: Array<any>;
 
@@ -47,11 +49,11 @@ export class PlaceUserOrderComponent {
     if (this.restaurantId) {
       const restaurant = await this.restaurantProvider.getRestaurant(this.restaurantId);
       this.items = restaurant.restaurant.menu[0].categories.categories
-        .map(category => {
-          return category.products.products.map(product => {
+        .map((category) => {
+          return category.products.products.map((product) => {
             let sizes = [];
             if (product.sizes) {
-              sizes = product.sizes.products.map(product => this.createProduct(product));
+              sizes = product.sizes.products.map((product) => this.createProduct(product));
             }
 
             return [...sizes, this.createProduct(product)];
@@ -73,7 +75,9 @@ export class PlaceUserOrderComponent {
     return {
       id: rawData.id,
       name: rawData.name,
-      price: rawData.deliveryPrice
+      price: rawData.deliveryPrice,
+      description: rawData.description,
+      options: rawData.options,
     };
   }
 
@@ -85,26 +89,47 @@ export class PlaceUserOrderComponent {
     M.Autocomplete.init(this.itemElement.nativeElement, {
       data: autocomplete,
       limit: 5,
-      onAutocomplete: this.handleAutocomplete.bind(this)
+      onAutocomplete: this.handleAutocomplete.bind(this),
     });
   }
 
   private handleAutocomplete(result: string) {
-    this.selectedItem = this.items.find(item => item.name === result);
+    this.selectedItem = this.items.find((item) => item.name === result);
 
     if (this.selectedItem) {
       this.item = this.selectedItem.name;
       this.price = (this.selectedItem.price / 100).toFixed(2);
+      this.options = this.selectedItem.options.options;
 
-      setTimeout(() => M.updateTextFields());
+      this.options.map((option, index) => {
+        console.log(option);
+        if (option.type == 1) {
+          const firstOption = option.choices.choices[0];
+          this.selectedOptions.set("choice_" + index, { name: firstOption.name, id: firstOption.id, added: true });
+        }
+      });
+
+      setTimeout(() => {
+        M.AutoInit(this.modalElement.nativeElement);
+        M.updateTextFields();
+      });
     }
+  }
+
+  getOptions() {
+    const options = [];
+    for (var [key, value] of this.selectedOptions.entries()) {
+      options.push({ ...value, key });
+    }
+    return options;
   }
 
   async addOrder() {
     const userOrder = {
       item: this.item,
       price: parseFloat(this.price),
-      comment: this.comment
+      comment: this.comment,
+      options: this.getOptions(),
     };
 
     await this.vege.addUserOrder(this.orderId, userOrder);
@@ -116,7 +141,8 @@ export class PlaceUserOrderComponent {
     const userOrder = {
       item: this.item,
       price: parseFloat(this.price),
-      comment: this.comment
+      comment: this.comment,
+      options: this.getOptions(),
     };
 
     await this.vege.editUserOrder(this.orderId, this.userOrderId, userOrder);
@@ -134,5 +160,14 @@ export class PlaceUserOrderComponent {
 
   isEdit() {
     return !!this.userOrderId;
+  }
+
+  optionChanged(added: boolean, name: string, id: string, price: number, index: string) {
+    if (added) {
+      this.selectedOptions.set(index, { name, id, added });
+    } else {
+      this.selectedOptions.delete(index);
+    }
+    console.log("option change", name, id, price, this.selectedOptions);
   }
 }
