@@ -1,7 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
-import { UserOrder } from "../../../../be/src/models";
+import { utils } from "protractor";
+import { OrderStatus, UserOrder } from "../../../../be/src/models";
 import { AuthService } from "../auth.service";
 import { PopupService } from "../popup.service";
+import { Utils } from "../utils";
 import { VegeService } from "../vege.service";
 
 @Component({
@@ -11,6 +13,8 @@ import { VegeService } from "../vege.service";
 })
 export class UserOrderComponent {
   @ViewChild("optionsDropdown") optionsElement: ElementRef;
+
+  formatPrice = Utils.formatPrice;
 
   owner = false;
   @Input() userOrder: UserOrder;
@@ -40,6 +44,10 @@ export class UserOrderComponent {
 
   getOptions() {
     return this.userOrder.options?.map((option) => option.name).join(", ");
+  }
+
+  getOptionsPrice() {
+    return this.userOrder.options?.reduce((total, option) => option.price + total, 0);
   }
 
   canRemove() {

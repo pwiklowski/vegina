@@ -29,7 +29,7 @@
                 class="filled-in"
                 (change)="optionChanged($event.target.checked, choice.name, choice.id, choice.deliveryPrice, 'choice_' + i + '_' + j)"
               />
-              <span>{{ choice.name }} (+{{ choice.deliveryPrice }})</span>
+              <span>{{ choice.name }} (+{{ formatPrice(choice.deliveryPrice) }})</span>
             </label>
           </p>
         </div>

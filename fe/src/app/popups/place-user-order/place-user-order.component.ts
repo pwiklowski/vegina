@@ -3,6 +3,7 @@ import { VegeService } from "../../vege.service";
 import { Modal } from "materialize-css";
 import { Subject } from "rxjs";
 import { RestaurantProviderService } from "src/app/restaurant-provider.service";
+import { Utils } from "../../utils";
 
 @Component({
   selector: "app-place-user-order",
@@ -12,6 +13,9 @@ import { RestaurantProviderService } from "src/app/restaurant-provider.service";
 export class PlaceUserOrderComponent {
   @ViewChild("placeUserOrder") modalElement: ElementRef;
   @ViewChild("itemUserOrder") itemElement: ElementRef;
+
+  convertPrice = Utils.convertPrice;
+  formatPrice = Utils.formatPrice;
 
   modal: Modal;
 
@@ -44,7 +48,7 @@ export class PlaceUserOrderComponent {
     this.orderId = params.orderId;
     this.userOrderId = params.userOrderId;
     this.item = params.item;
-    this.price = params.price;
+    this.price = this.formatPrice(params.price);
     this.comment = params.comment;
     this.restaurantId = params.restaurantId;
     this.categoryId = params.categoryId;
@@ -103,7 +107,7 @@ export class PlaceUserOrderComponent {
 
     if (this.selectedItem) {
       this.item = this.selectedItem.name;
-      this.price = (this.selectedItem.price / 100).toFixed(2);
+      this.price = this.formatPrice(this.selectedItem.price);
       this.options = this.selectedItem.options;
       this.categoryId = this.selectedItem.categoryId;
       this.itemId = this.selectedItem.itemId;
@@ -134,7 +138,7 @@ export class PlaceUserOrderComponent {
   async addOrder() {
     const userOrder = {
       item: this.item,
-      price: parseFloat(this.price),
+      price: parseFloat(this.price) * 100,
       categoryId: this.categoryId,
       itemId: this.itemId,
       comment: this.comment,
@@ -149,7 +153,7 @@ export class PlaceUserOrderComponent {
   async editOrder() {
     const userOrder = {
       item: this.item,
-      price: parseFloat(this.price),
+      price: parseFloat(this.price) * 100,
       comment: this.comment,
       options: this.getOptions(),
       categoryId: this.categoryId,
@@ -175,7 +179,7 @@ export class PlaceUserOrderComponent {
 
   optionChanged(added: boolean, name: string, id: string, price: number, index: string) {
     if (added) {
-      this.selectedOptions.set(index, { name, id, added });
+      this.selectedOptions.set(index, { name, id, added, price });
     } else {
       this.selectedOptions.delete(index);
     }
