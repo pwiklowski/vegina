@@ -104,6 +104,8 @@ export class CreateOrderComponent {
       this.minimumOrderValue = order.minimumOrderValue.toString();
       this.deliveryCost = order.deliveryCost.toString();
 
+      this.selectedRestaurant = this.restaurants.find((restaurant) => restaurant.id === params.order.placeMetadata.pyszneId);
+
       setTimeout(() => {
         M.updateTextFields();
         this.orderStatusSelect = M.FormSelect.init(this.orderStatusElement.nativeElement, {});
