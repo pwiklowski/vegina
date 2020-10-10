@@ -186,4 +186,9 @@ export class PlaceUserOrderComponent {
     }
     console.log("option change", name, id, price, this.selectedOptions);
   }
+
+  optionDropDownChanged(index: number, value: string) {
+    const option = this.options[index].choices.choices.find((choice) => choice.id === value);
+    this.selectedOptions.set("choice_" + index, { name: option.name, id: option.id, added: true, price: option.deliveryPrice });
+  }
 }

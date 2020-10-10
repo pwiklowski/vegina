@@ -35,8 +35,8 @@
         </div>
         <div *ngIf="option.type == 1">
           <div class="input-field col s12">
-            <select (change)="optionChanged(true, $event.target.innerText, $event.target.value, 0, 'choice_' + i)">
-              <option value="{{ choice.id }}" *ngFor="let choice of option.choices.choices">
+            <select (change)="optionDropDownChanged(i, $event.target.value)">
+              <option *ngFor="let choice of option.choices.choices" value="{{ choice.id }}">
                 {{ choice.name }}
               </option>
             </select>
