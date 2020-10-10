@@ -24,7 +24,7 @@ export class PlaceUserOrderComponent {
   orderId: string;
   userOrderId: string;
   restaurantId: string;
-  selectedOptions: Map<string, any> = new Map();
+  optionsModel: Map<string, any> = new Map();
 
   public item: string;
   public price: string;
@@ -74,6 +74,13 @@ export class PlaceUserOrderComponent {
           return [...array, ...products];
         }, []);
 
+      if (this.item) {
+        params.selectedOptions.map((option) => {
+          this.optionsModel.set(option.id, true);
+        });
+        this.handleAutocomplete(this.item);
+      }
+
       this.initAutocompleteInput();
     }
 
@@ -114,11 +121,11 @@ export class PlaceUserOrderComponent {
       this.itemId = this.selectedItem.itemId;
 
       this.options?.map((option, index) => {
-        console.log(option);
-        if (option.type == 1) {
-          const firstOption = option.choices.choices[0];
-          this.selectedOptions.set("choice_" + index, { name: firstOption.name, id: firstOption.id, added: true });
-        }
+        option.choices.choices.map((choice) => {
+          if (!this.optionsModel.has(choice.id)) {
+            this.optionsModel.set(choice.id, false);
+          }
+        });
       });
 
       setTimeout(() => {
@@ -130,9 +137,22 @@ export class PlaceUserOrderComponent {
 
   getOptions() {
     const options = [];
-    for (var [key, value] of this.selectedOptions.entries()) {
-      options.push({ ...value, key });
+    const faltOptionlist = this.options?.reduce((sum, option) => {
+      return [
+        ...sum,
+        ...option.choices.choices.map((choice) => {
+          console.log(choice);
+          return choice;
+        }),
+      ];
+    }, []);
+    for (var [key, value] of this.optionsModel.entries()) {
+      if (value) {
+        const item = faltOptionlist.find((item) => item.id === key);
+        options.push({ id: item.id, name: item.name, price: item.deliveryPrice });
+      }
     }
+
     return options;
   }
 
@@ -178,17 +198,13 @@ export class PlaceUserOrderComponent {
     return !!this.userOrderId;
   }
 
-  optionChanged(added: boolean, name: string, id: string, price: number, index: string) {
-    if (added) {
-      this.selectedOptions.set(index, { name, id, added, price });
-    } else {
-      this.selectedOptions.delete(index);
-    }
-    console.log("option change", name, id, price, this.selectedOptions);
+  optionChanged(id: string, value: boolean) {
+    this.optionsModel.set(id, value);
   }
 
-  optionDropDownChanged(index: number, value: string) {
-    const option = this.options[index].choices.choices.find((choice) => choice.id === value);
-    this.selectedOptions.set("choice_" + index, { name: option.name, id: option.id, added: true, price: option.deliveryPrice });
+  radioChanged(selected, choices) {
+    choices.map((choice) => {
+      this.optionsModel.set(choice.id, selected === choice.id);
+    });
   }
 }

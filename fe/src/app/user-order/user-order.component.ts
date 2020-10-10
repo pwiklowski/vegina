@@ -21,6 +21,7 @@ export class UserOrderComponent {
   @Input() orderId: string;
   @Input() deliveryCost: number;
   @Input() status: string;
+  @Input() restaurantId: string;
 
   @Output() refresh: EventEmitter<void> = new EventEmitter<void>();
 
@@ -67,6 +68,8 @@ export class UserOrderComponent {
       price: this.userOrder.price,
       categoryId: this.userOrder.categoryId,
       itemId: this.userOrder.itemId,
+      restaurantId: this.restaurantId,
+      selectedOptions: this.userOrder.options,
     });
     this.popup.placeUserOrderComponent.open();
     this.popup.placeUserOrderComponent.success.subscribe(() => {
@@ -82,6 +85,8 @@ export class UserOrderComponent {
       price: this.userOrder.price,
       categoryId: this.userOrder.categoryId,
       itemId: this.userOrder.itemId,
+      restaurantId: this.restaurantId,
+      selectedOptions: this.userOrder.options,
     });
     this.popup.placeUserOrderComponent.open();
     this.popup.placeUserOrderComponent.success.subscribe(() => {

@@ -18,32 +18,35 @@
       <input type="text" [(ngModel)]="comment" />
     </div>
 
-    <form action="#">
-      <div *ngFor="let option of options; index as i">
-        {{ option.name }}:
-        <div *ngIf="option.type == 2">
-          <p *ngFor="let choice of option.choices.choices; index as j">
-            <label>
-              <input
-                type="checkbox"
-                class="filled-in"
-                (change)="optionChanged($event.target.checked, choice.name, choice.id, choice.deliveryPrice, 'choice_' + i + '_' + j)"
-              />
-              <span>{{ choice.name }} (+{{ formatPrice(choice.deliveryPrice) }})</span>
-            </label>
-          </p>
-        </div>
-        <div *ngIf="option.type == 1">
-          <div class="input-field col s12">
-            <select (change)="optionDropDownChanged(i, $event.target.value)">
-              <option *ngFor="let choice of option.choices.choices" value="{{ choice.id }}">
-                {{ choice.name }}
-              </option>
-            </select>
-          </div>
-        </div>
+    <div *ngFor="let option of options; index as i">
+      {{ option.name }}:
+      <div *ngIf="option.type == 2">
+        <p *ngFor="let choice of option.choices.choices; index as j">
+          <label>
+            <input
+              type="checkbox"
+              class="filled-in"
+              [checked]="optionsModel.get(choice.id)"
+              (change)="optionChanged(choice.id, $event.target.checked)"
+            />
+            <span>{{ choice.name }} (+{{ formatPrice(choice.deliveryPrice) }})</span>
+          </label>
+        </p>
       </div>
-    </form>
+      <div *ngIf="option.type == 1">
+        <p *ngFor="let choice of option.choices.choices">
+          <label>
+            <input
+              name="choice"
+              type="radio"
+              [checked]="optionsModel.get(choice.id)"
+              (change)="radioChanged(choice.id, option.choices.choices)"
+            />
+            <span>{{ choice.name }}</span>
+          </label>
+        </p>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-close waves-effect waves-green btn-flat"> Cancel </a>
