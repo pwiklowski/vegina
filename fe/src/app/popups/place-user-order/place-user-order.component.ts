@@ -53,6 +53,7 @@ export class PlaceUserOrderComponent {
     this.restaurantId = params.restaurantId;
     this.categoryId = params.categoryId;
     this.itemId = params.itemId;
+    this.options = [];
 
     if (this.restaurantId) {
       const restaurant = await this.restaurantProvider.getRestaurant(this.restaurantId);
